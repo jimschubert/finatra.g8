@@ -16,6 +16,8 @@ resolvers += "maven.twttr.com" at "https://maven.twttr.com"
 
 Revolver.settings
 
+enablePlugins(JavaAppPackaging)
+
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
                 |""".stripMargin
@@ -24,7 +26,7 @@ lazy val versions = new {
   val finatra = "2.5.0"
   val guice = "4.0"
   val logback = "1.1.7"
-  val mockito = "2.2.15"
+  val mockito = "1.9.5"
   val scalatest = "2.2.6"
   val junitInterface = "0.11"
 }
@@ -56,11 +58,6 @@ libraryDependencies ++= Seq(
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
 
-assemblyMergeStrategy in assembly := {
-  case "BUILD" => MergeStrategy.discard
-  case other => MergeStrategy.defaultMergeStrategy(other)
-}
-
 scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
@@ -70,6 +67,5 @@ scalacOptions ++= Seq(
   "-Yinline", 
   "-Xverify",
   "-feature",
-  "-language:postfixOps",
-  "-Ylog-classpath"
+  "-language:postfixOps"
 )
