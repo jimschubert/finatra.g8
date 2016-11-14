@@ -5,14 +5,14 @@ import com.twitter.finatra.http.EmbeddedHttpServer
 import com.twitter.inject.server.FeatureTest
 import $package$.Server
 
-class MainControllerFeatureTest extends FeatureTest {
+class $className$ControllerFeatureTest extends FeatureTest {
 
   override val server = new EmbeddedHttpServer(new Server)
 
-  "Server" should {
+  "/$className$" should {
     "respond" in {
       server.httpGet(
-        path = "/",
+        path = "/$className$",
         andExpect = Ok,
         withBody = "{\"message\":\"success\"}")
     }

@@ -58,3 +58,15 @@ docker run $(docker images -a -q | head -1)
 <kbd>CTRL</kbd>+<kbd>C</kbd> to kill the container.
 
 The native packager's docker plugin gets you up and running in seconds. For longer term development, you'll probably find a `Dockerfile` to be a more maintainable solution.
+
+# Scaffolding
+
+New code can be quickly generated using Giter8 Scaffolding.
+
+Directories under `./g8` house the types of scaffolds. For example, `./g8/controller` contains templates to scaffold a new controller. To do this, run the following from an sbt session:
+
+```
+g8Scaffold controller
+```
+
+Answer the prompts and a success message should appear.
