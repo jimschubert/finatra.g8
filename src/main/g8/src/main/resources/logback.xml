@@ -1,14 +1,85 @@
 <configuration>
 
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <!-- encoders are assigned the type
-         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
 
-  <root level="debug">
-    <appender-ref ref="STDOUT" />
-  </root>
+    <!-- JUL/JDK14 to Logback bridge -->
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <!-- ===================================================== -->
+    <!-- Secondary Appenders -->
+    <!-- ===================================================== -->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %.-3level %-25X{traceId} %-25logger{0} %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT-SERVICE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %.-3level %-16X{traceId} %-25logger{0} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT-ACCESS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg %X{traceId}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ===================================================== -->
+    <!-- Primary Async Appenders -->
+    <!-- ===================================================== -->
+
+    <property name="async_queue_size" value="${queue.size:-1024}"/>
+    <property name="async_max_flush_time" value="${max.flush.time:-0}"/>
+
+    <appender name="ASYNC-SERVICE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>${async_queue_size}</queueSize>
+        <maxFlushTime>${async_max_flush_time}</maxFlushTime>
+        <appender-ref ref="STDOUT-SERVICE"/>
+    </appender>
+
+    <appender name="ASYNC-ACCESS" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>${async_queue_size}</queueSize>
+        <maxFlushTime>${async_max_flush_time}</maxFlushTime>
+        <appender-ref ref="STDOUT-ACCESS"/>
+    </appender>
+
+    <!-- FLUENTD -->
+    <appender name="FLUENTD" class="eu.inn.fluentd.FluentdAppender">
+        <tag>$package$</tag>
+        <remoteHost>${BI_FLUENTD_HOST:-localhost}</remoteHost>
+        <port>${BI_FLUENTD_PORT:-24224}</port>
+    </appender>
+    <appender name="ASYNC-FLUENTD-SERVICE" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>${async_queue_size}</queueSize>
+        <maxFlushTime>${async_max_flush_time}</maxFlushTime>
+        <appender-ref ref="FLUENTD"/>
+    </appender>
+
+    <!-- ===================================================== -->
+    <!-- Package Config -->
+    <!-- ===================================================== -->
+
+    <!-- Root Config -->
+    <root level="warn">
+        <appender-ref ref="ASYNC-SERVICE"/>
+    </root>
+
+    <!-- Per-Package Config -->
+    <logger name="com.twitter" level="info"/>
+    <logger name="com.twitter.finatra" level="debug"/>
+    <logger name="$package$.controllers" level="${LOG_LEVEL:-info}">
+        <appender-ref ref="ASYNC-FLUENTD-SERVICE"/>
+        <!-- <appender-ref ref="ASYNC-ACCESS"/> -->
+    </logger>
+
+    <logger name="com.twitter.finatra.http.filters.AccessLoggingFilter"
+            level="info"
+            additivity="false">
+        <appender-ref ref="ASYNC-ACCESS"/>
+    </logger>
+
 </configuration>
