@@ -1,12 +1,16 @@
 import sbt.Keys._
+import com.typesafe.sbt.packager.docker._
+import org.scalafmt.sbt.ScalaFmtPlugin
 
 name := "$name$"
 
 organization := "$organization$"
 
-version := "$version$"
+version := "$service_version$"
 
 scalaVersion := "$scala_version$"
+
+scalaOrganization := "org.typelevel"
 
 fork in run := true
 
@@ -16,11 +20,21 @@ resolvers += "maven.twttr.com" at "https://maven.twttr.com"
 
 Revolver.settings
 
-enablePlugins(JavaAppPackaging)
+enablePlugins(AutomateHeaderPlugin,
+              GitVersioning,
+              JavaAppPackaging,
+              DockerPlugin,
+              GitVersioning,
+              GitBranchPrompt,
+              MdReleaseNotesFormat,
+              RootFolderReleaseNotesStrategy)
 
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
                 |""".stripMargin
+
+ScalaFmtPlugin.autoImport.reformatOnCompileSettings
+ScalaFmtPlugin.autoImport.scalafmtConfig := Some(baseDirectory.in(ThisBuild).value / ".scalafmt.conf")
 
 lazy val versions = new {
   val finatra        = "2.6.0"
