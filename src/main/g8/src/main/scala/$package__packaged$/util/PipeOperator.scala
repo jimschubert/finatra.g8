@@ -6,12 +6,12 @@ object PipeOperator {
     def |>[U](f: T => U) = f(v)
 
     // Additional suggestions:
-    def $$[U](f: T => U): T = {
+    def $"$$"$[U](f: T => U): T = {
       f(v); v
     }
 
     def #!(str: String = ""): T = {
-      println(s"$str:$v"); v
+      println(s"$"$"$str:$"$"$v"); v
     }
   }
 

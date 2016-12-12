@@ -32,30 +32,30 @@
     <!-- Primary Async Appenders -->
     <!-- ===================================================== -->
 
-    <property name="async_queue_size" value="${queue.size:-1024}"/>
-    <property name="async_max_flush_time" value="${max.flush.time:-0}"/>
+    <property name="async_queue_size" value="$"$"${queue.size:-1024}"/>
+    <property name="async_max_flush_time" value="$"$"${max.flush.time:-0}"/>
 
     <appender name="ASYNC-SERVICE" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>${async_queue_size}</queueSize>
-        <maxFlushTime>${async_max_flush_time}</maxFlushTime>
+        <queueSize>$"$"${async_queue_size}</queueSize>
+        <maxFlushTime>$"$"${async_max_flush_time}</maxFlushTime>
         <appender-ref ref="STDOUT-SERVICE"/>
     </appender>
 
     <appender name="ASYNC-ACCESS" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>${async_queue_size}</queueSize>
-        <maxFlushTime>${async_max_flush_time}</maxFlushTime>
+        <queueSize>$"$"${async_queue_size}</queueSize>
+        <maxFlushTime>$"$"${async_max_flush_time}</maxFlushTime>
         <appender-ref ref="STDOUT-ACCESS"/>
     </appender>
 
     <!-- FLUENTD -->
     <appender name="FLUENTD" class="eu.inn.fluentd.FluentdAppender">
         <tag>$package$</tag>
-        <remoteHost>${BI_FLUENTD_HOST:-localhost}</remoteHost>
-        <port>${BI_FLUENTD_PORT:-24224}</port>
+        <remoteHost>$"$"${BI_FLUENTD_HOST:-localhost}</remoteHost>
+        <port>$"$"${BI_FLUENTD_PORT:-24224}</port>
     </appender>
     <appender name="ASYNC-FLUENTD-SERVICE" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>${async_queue_size}</queueSize>
-        <maxFlushTime>${async_max_flush_time}</maxFlushTime>
+        <queueSize>$"$"${async_queue_size}</queueSize>
+        <maxFlushTime>$"$"${async_max_flush_time}</maxFlushTime>
         <appender-ref ref="FLUENTD"/>
     </appender>
 
@@ -71,7 +71,7 @@
     <!-- Per-Package Config -->
     <logger name="com.twitter" level="info"/>
     <logger name="com.twitter.finatra" level="debug"/>
-    <logger name="$package$.controllers" level="${LOG_LEVEL:-info}">
+    <logger name="$package$.controllers" level="$"$"${LOG_LEVEL:-info}">
         <appender-ref ref="ASYNC-FLUENTD-SERVICE"/>
         <!-- <appender-ref ref="ASYNC-ACCESS"/> -->
     </logger>

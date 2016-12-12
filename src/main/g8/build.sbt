@@ -21,7 +21,6 @@ resolvers += "maven.twttr.com" at "https://maven.twttr.com"
 Revolver.settings
 
 enablePlugins(AutomateHeaderPlugin,
-              GitVersioning,
               JavaAppPackaging,
               DockerPlugin,
               GitVersioning,
@@ -105,18 +104,21 @@ scalacOptions ++= Seq(
   "-Yliteral-types"
 )
 
-bashScriptExtraDefines ++= Seq("""addApp "-log.level=${LOG_LEVEL}"""",
-                               s"""addApp "-service.version=${version.value}"""")
+bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL}"""",
+                               s"""addApp "-service.version=$"$"${version.value}"""")
+
+val gitHeadCode = SettingKey[String]("git-head-hash", "The commit hash code of HEAD")
+gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getOrElse("na")
 
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 dockerBaseImage := "java:8-jre-alpine"
-version in Docker := s"${version.value}_${Process("git rev-parse HEAD").lines.head.take(7)}"
+version in Docker := s"$"$"${version.value}_$"$"${gitHeadCode.value}"
 maintainer in Docker := "Richard Chuo <richard_chuo@htc.com>"
 dockerExposedPorts := Seq(9999, 9990)
 dockerRepository := Some("vr-docker-registry-usw2.cshtc-vr.com")
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
-  Cmd("LABEL", s"version=${version.value}"),
+  Cmd("LABEL", s"version=$"$"${version.value}"),
   Cmd("ENV", "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$"),
   Cmd("RUN", """if test -f /etc/alpine-release; then apk update --no-progress && apk upgrade -v;fi"""),
   Cmd("RUN", """if test -f /etc/alpine-release; then apk add bash;fi""")

@@ -1,7 +1,7 @@
-package $package$.swagger
+package $package$
 
 import com.github.xiaodongw.swagger.finatra.{SwaggerController, WebjarsController}
-import com.htc.vr8.optlocsvc.controllers.AdminController
+import $package$.controllers.AdminController
 import $package$.swagger.ProjectSwagger
 import $package$.util.AppConfigLib._
 import com.twitter.finagle.http.{Request, Response}
@@ -20,15 +20,15 @@ object ServerMain extends Server
 class Server extends HttpServer {
   val serviceVersion = flag[String]("service.version", "NA", "the version of country settings")
 
-  override def defaultFinatraHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => s":$x")
-  override val name = "$package$ $name;format="Camel"$"
+  override def defaultFinatraHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => s":$"$"$x")
+  override val name                   = "$package$ $name;format="Camel"$"
 
 // Swagger JSON support
   ModelConverters
     .getInstance()
     .addConverter(new ModelResolver(jacksonModule.asInstanceOf[FinatraJacksonModule].provideScalaObjectMapper(null)))
 
-  override def configureHttp(router: HttpRouter) {
+  override def configureHttp(router: HttpRouter): Unit = {
     router
       .filter[CommonFilters]
       .filter[LoggingMDCFilter[Request, Response]]
