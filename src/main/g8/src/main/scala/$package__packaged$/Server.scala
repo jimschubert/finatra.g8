@@ -18,7 +18,7 @@ import io.swagger.models.{Contact, Info}
 object ServerMain extends Server
 
 class Server extends HttpServer {
-  val serviceVersion = flag[String]("service.version", "NA", "the version of country settings")
+  val serviceVersion = flag[String]("service.version", "NA", "the version of service")
 
   override def defaultFinatraHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => s":$"$"$x")
   override val name                   = "$package$ $name;format="Camel"$"
