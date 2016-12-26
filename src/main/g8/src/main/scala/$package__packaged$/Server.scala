@@ -43,7 +43,7 @@ class Server extends HttpServer {
     super.postWarmup()
 
     val info = new Info()
-      .contact(new Contact().name("Richard Chuo").email("richard_chuo@htc.com"))
+      .contact(new Contact().name("$maintainer_name$").email("$maintainer_email$"))
       .description(
         "**$name$** - $service_description$.")
       .version(serviceVersion())
