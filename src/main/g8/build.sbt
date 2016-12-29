@@ -36,7 +36,7 @@ ScalaFmtPlugin.autoImport.reformatOnCompileSettings
 ScalaFmtPlugin.autoImport.scalafmtConfig := Some(baseDirectory.in(ThisBuild).value / ".scalafmt.conf")
 
 lazy val versions = new {
-  val finatra        = "2.6.0"
+  val finatra        = "2.7.0"
   val guice          = "4.1.0"
   val logback        = "1.1.7"
   val mockito        = "1.9.5"
