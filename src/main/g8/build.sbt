@@ -101,7 +101,8 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard",
   "-Ywarn-unused",
   "-Ypartial-unification",
-  "-Yliteral-types"
+  "-Yliteral-types",
+  "-P:clippy:colors=true"
 )
 
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL}"""",
