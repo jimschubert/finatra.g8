@@ -12,12 +12,14 @@ import com.twitter.finatra.json.modules.FinatraJacksonModule
 import com.twitter.inject.annotations.Lifecycle
 import $package$.controllers.MainController
 import io.swagger.converter.ModelConverters
+import com.twitter.util.Var
 import io.swagger.jackson.ModelResolver
 import io.swagger.models.{Contact, Info}
 
 object ServerMain extends Server
 
 class Server extends HttpServer {
+  val health         = Var("good")
   val serviceVersion = flag[String]("service.version", "NA", "the version of service")
 
   override def defaultFinatraHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => s":$"$"$x")
