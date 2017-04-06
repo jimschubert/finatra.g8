@@ -11,13 +11,11 @@ class AdminControllerFeatureTest extends FeatureTest {
   override val server =
     new EmbeddedHttpServer(twitterServer = new Server, flags = Map("service.version" -> serviceVersion))
 
-  "Server" should {
-    "return `OK` (health check) if the service is on" in {
+  test("Server should return `OK` (health check) if the service is on") {
       server.httpGet(path = "/health", andExpect = Ok)
-    }
+  }
 
-    "return service version" in {
+  test("Server should return service version") {
       server.httpGet(path = "/version", andExpect = Ok, withBody = serviceVersion)
-    }
   }
 }

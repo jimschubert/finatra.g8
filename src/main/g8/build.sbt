@@ -1,6 +1,8 @@
 import sbt.Keys._
 import com.typesafe.sbt.packager.docker._
-import org.scalafmt.sbt.ScalaFmtPlugin
+import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.DockerAlias
+
+import scala.language.postfixOps
 
 name := "$name$"
 
@@ -32,28 +34,39 @@ initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
                 |""".stripMargin
 
-ScalaFmtPlugin.autoImport.reformatOnCompileSettings
-ScalaFmtPlugin.autoImport.scalafmtConfig := Some(baseDirectory.in(ThisBuild).value / ".scalafmt.conf")
+coverageHighlighting := true
+
+scapegoatVersion := "1.3.0"
+
+lazy val scalafmtTask = taskKey[Unit]("run scalafmt")
+scalafmtTask := {
+  import sys.process._
+
+  Seq("sbt", "scalafmt") !
+}
+(compile in Compile) <<= (compile in Compile) dependsOn scalafmtTask
 
 lazy val versions = new {
-  val finatra        = "2.7.0"
+  val finatra        = "2.9.0"
   val guice          = "4.1.0"
-  val logback        = "1.1.7"
+  val logback        = "1.2.3"
   val mockito        = "1.9.5"
   val scalatest      = "3.0.1"
   val junitInterface = "0.11"
-  val mongoScala     = "1.2.1"
-  val swaggerCore    = "1.5.10"
-  val swaggerScala   = "1.0.2"
+  val mongoScala     = "2.0.0"
+  val swaggerCore    = "1.5.13"
+  val swaggerScala   = "1.0.3"
   val swaggerUI      = "2.2.6"
-  val dockerItScala  = "0.9.0-M10"
+  val dockerItScala  = "0.9.1"
   val scalaUri       = "0.4.16"
-  val hamsters       = "1.0.7"
+  val hamsters       = "1.1.2"
   val errors         = "1.1"
-  val fluentdScala   = "0.1.21"
+  val fluentdScala   = "0.2.5"
+  val swaggerFinatra = "0.7.2"
 }
 
 libraryDependencies ++= Seq(
+  "com.github.xiaodongw"         %% "swagger-finatra"      % versions.swaggerFinatra,
   "eu.inn"                       %% "fluentd-scala"        % versions.fluentdScala,
   "com.github.mehmetakiftutuncu" %% "errors"               % versions.errors,
   "io.github.scala-hamsters"     %% "hamsters"             % versions.hamsters,
@@ -88,6 +101,12 @@ libraryDependencies ++= Seq(
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
 
+fork in test := false
+
+parallelExecution in Test := false
+
+clippyColorsEnabled := true
+
 scalacOptions ++= Seq(
   "-target:jvm-1.8",
   "-encoding",
@@ -118,6 +137,19 @@ version in Docker := s"$"$"${version.value}_$"$"${gitHeadCode.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
 dockerRepository := Some("vr-docker-registry-usw2.cshtc-vr.com")
+dockerAlias := DockerAlias(dockerRepository.value,
+                           None,
+                           (packageName in Docker).value,
+                           Some((version in Docker).value))
+dockerUpdateLatest := false
+dockerBuildOptions := Seq(
+  "--force-rm",
+  "-t",
+  s"$"$"${dockerRepository.value.get}/$"$"${(packageName in Docker).value}:$"$"${(version in Docker).value}",
+  "--squash",
+  "--no-cache",
+  "--pull"
+)
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("LABEL", s"version=$"$"${version.value}"),
   Cmd("ENV", "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$"),

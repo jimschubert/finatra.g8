@@ -10,7 +10,7 @@ class StartupTest extends FeatureTest {
     stage = Stage.PRODUCTION,
     twitterServer = new Server)
 
-  "server" in {
+  test("server") {
     server.assertHealthy()
   }
 }
