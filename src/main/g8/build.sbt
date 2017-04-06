@@ -53,7 +53,6 @@ lazy val versions = new {
   val mockito        = "1.9.5"
   val scalatest      = "3.0.1"
   val junitInterface = "0.11"
-  val mongoScala     = "2.0.0"
   val swaggerCore    = "1.5.13"
   val swaggerScala   = "1.0.3"
   val swaggerUI      = "2.2.6"
@@ -78,7 +77,6 @@ libraryDependencies ++= Seq(
   "com.twitter"                  %% "finatra-httpclient"   % versions.finatra,
   "com.twitter"                  %% "finatra-jackson"      % versions.finatra,
   "ch.qos.logback"               % "logback-classic"       % versions.logback,
-  "org.mongodb.scala"            %% "mongo-scala-driver"   % versions.mongoScala,
   "com.twitter"                  %% "finatra-http"    % versions.finatra % "test",
   "com.twitter"                  %% "finatra-jackson" % versions.finatra % "test",
   "com.twitter"                  %% "inject-server"   % versions.finatra % "test",
