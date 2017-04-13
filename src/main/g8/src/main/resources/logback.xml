@@ -48,16 +48,11 @@
     </appender>
 
     <!-- FLUENTD -->
-    <appender name="FLUENTD" class="eu.inn.fluentd.FluentdAppender">
+    <!-- <appender name="FLUENTD" class="eu.inn.fluentd.FluentdAppender">
         <tag>$package$</tag>
         <remoteHost>$"$"${BI_FLUENTD_HOST:-localhost}</remoteHost>
         <port>$"$"${BI_FLUENTD_PORT:-24224}</port>
-    </appender>
-    <appender name="ASYNC-FLUENTD-SERVICE" class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>$"$"${async_queue_size}</queueSize>
-        <maxFlushTime>$"$"${async_max_flush_time}</maxFlushTime>
-        <appender-ref ref="FLUENTD"/>
-    </appender>
+    </appender> -->
 
     <!-- ===================================================== -->
     <!-- Package Config -->
@@ -72,8 +67,8 @@
     <logger name="com.twitter" level="info"/>
     <logger name="com.twitter.finatra" level="debug"/>
     <logger name="$package$.controllers" level="$"$"${LOG_LEVEL:-info}">
-        <appender-ref ref="ASYNC-FLUENTD-SERVICE"/>
-        <!-- <appender-ref ref="ASYNC-ACCESS"/> -->
+        <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
+        <appender-ref ref="ASYNC-ACCESS"/>
     </logger>
 
     <logger name="com.twitter.finatra.http.filters.AccessLoggingFilter"

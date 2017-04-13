@@ -10,7 +10,11 @@ object RichHttpClient {
   /* Public */
 
   def newClientService(dest: String): Service[Request, Response] = {
-    Http.newClient(dest).toService
+    Http.client.withSession
+      .maxLifeTime(20.seconds)
+      .withSession
+      .maxIdleTime(10.seconds)
+      .newService(dest)
   }
 
   def newSslClientService(sslHostname: String, dest: String): Service[Request, Response] = {

@@ -28,7 +28,8 @@ enablePlugins(AutomateHeaderPlugin,
               GitVersioning,
               GitBranchPrompt,
               MdReleaseNotesFormat,
-              RootFolderReleaseNotesStrategy)
+              RootFolderReleaseNotesStrategy,
+              MicrositesPlugin)
 
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
@@ -56,9 +57,9 @@ lazy val versions = new {
   val swaggerCore    = "1.5.13"
   val swaggerScala   = "1.0.3"
   val swaggerUI      = "2.2.6"
-  val dockerItScala  = "0.9.1"
+  val dockerItScala  = "0.9.2"
   val scalaUri       = "0.4.16"
-  val hamsters       = "1.1.2"
+  val hamsters       = "1.1.3"
   val errors         = "1.1"
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "0.7.2"
@@ -154,3 +155,12 @@ dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("RUN", """if test -f /etc/alpine-release; then apk update --no-progress && apk upgrade -v;fi"""),
   Cmd("RUN", """if test -f /etc/alpine-release; then apk add bash;fi""")
 ) ++ dockerCommands.value.drop(1)
+
+// MicroSites
+micrositeName := "$name$"
+micrositeBaseUrl := "$microsite_base_url$"
+micrositeDocumentationUrl := "/$microsite_base_url$/docs"
+micrositeAuthor := "$maintainer_name$"
+micrositeOrganizationHomepage := "http://www.htc.com"
+micrositeGitHostingService := Other("HICHub")
+micrositeGitHostingUrl := "https://hichub.htc.com"
