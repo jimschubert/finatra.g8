@@ -8,19 +8,24 @@ import $package$.util.PipeOperator._
 
 object RichHttpClient {
   /* Public */
-
+  val shouldEnableFastFail =
+    getConfig[Boolean]("FAIL_FAST_ENABLE").getOrElse(false)
+    
   def newClientService(dest: String): Service[Request, Response] = {
     Http.client.withSession
       .maxLifeTime(20.seconds)
       .withSession
       .maxIdleTime(10.seconds)
+      .|>(
+        c =>
+          if (!shouldEnableFastFail) c.withSessionQualifier.noFailFast
+          else c
+      )
       .newService(dest)
   }
 
   def newSslClientService(sslHostname: String, dest: String): Service[Request, Response] = {
     val shouldValidate = getConfig[Boolean]("TLS_VALIDATION").getOrElse(true)
-    val shouldEnableFastFail =
-      getConfig[Boolean]("FAIL_FAST_ENABLE").getOrElse(false)
 
     Http.client.withSession
       .maxLifeTime(20.seconds)
