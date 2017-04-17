@@ -123,6 +123,7 @@ scalacOptions ++= Seq(
   "-P:clippy:colors=true"
 )
 
+bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL}"""",
                                s"""addApp "-service.version=$"$"${version.value}"""")
 
