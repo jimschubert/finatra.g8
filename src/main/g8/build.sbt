@@ -48,7 +48,7 @@ scalafmtTask := {
 (compile in Compile) <<= (compile in Compile) dependsOn scalafmtTask
 
 lazy val versions = new {
-  val finatra        = "2.9.0"
+  val finatra        = "2.10.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.9.5"
@@ -57,7 +57,7 @@ lazy val versions = new {
   val swaggerCore    = "1.5.13"
   val swaggerScala   = "1.0.3"
   val swaggerUI      = "2.2.6"
-  val dockerItScala  = "0.9.2"
+  val dockerItScala  = "0.9.3"
   val scalaUri       = "0.4.16"
   val hamsters       = "1.1.3"
   val errors         = "1.1"
