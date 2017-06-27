@@ -48,7 +48,7 @@ scalafmtTask := {
 (compile in Compile) <<= (compile in Compile) dependsOn scalafmtTask
 
 lazy val versions = new {
-  val finatra        = "2.10.0"
+  val finatra        = "2.11.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.9.5"
@@ -59,16 +59,16 @@ lazy val versions = new {
   val swaggerUI      = "2.2.6"
   val dockerItScala  = "0.9.3"
   val scalaUri       = "0.4.16"
-  val hamsters       = "1.1.3"
-  val errors         = "1.1"
+  val hamsters       = "1.4.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "0.7.2"
+  val swaggerFinatra = "2.10.0"
+  val wireMock       = "2.6.0"
 }
 
 libraryDependencies ++= Seq(
-  "com.github.xiaodongw"         %% "swagger-finatra"      % versions.swaggerFinatra,
+  "com.github.tomakehurst"       % "wiremock"              % versions.wireMock,
+  "com.jakehschwartz"            % "finatra-swagger_2.12"  % versions.swaggerFinatra,
   "eu.inn"                       %% "fluentd-scala"        % versions.fluentdScala,
-  "com.github.mehmetakiftutuncu" %% "errors"               % versions.errors,
   "io.github.scala-hamsters"     %% "hamsters"             % versions.hamsters,
   "com.netaporter"               %% "scala-uri"            % versions.scalaUri,
   "io.swagger"                   % "swagger-core"          % versions.swaggerCore,

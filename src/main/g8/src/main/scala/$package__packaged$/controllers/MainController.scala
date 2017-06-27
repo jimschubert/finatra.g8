@@ -4,10 +4,18 @@ import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
 
 import javax.inject.{Inject, Singleton}
+import com.jakehschwartz.finatra.swagger.SwaggerController
+import io.swagger.models.Swagger
 
 @Singleton
-class MainController @Inject()() extends Controller {
-  get("/") { request: Request =>
-  	response.ok.json(Map("message" -> "success"))
+class MainController @Inject()(s: Swagger) extends SwaggerController {
+  implicit protected val swagger = s
+
+  getWithDoc("/") { o =>
+    o.summary("Acquiring greetings message")
+      .tag("Greetings")
+      .responseWith(200, "Hello message")
+  } { request: Request =>
+    response.ok.json(Map("message" -> "success"))
   }
 }
