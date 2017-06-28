@@ -12,8 +12,6 @@ version := "$service_version$"
 
 scalaVersion := "$scala_version$"
 
-scalaOrganization := "org.typelevel"
-
 fork in run := true
 
 resolvers += Resolver.sonatypeRepo("releases")
@@ -54,9 +52,6 @@ lazy val versions = new {
   val mockito        = "1.9.5"
   val scalatest      = "3.0.1"
   val junitInterface = "0.11"
-  val swaggerCore    = "1.5.13"
-  val swaggerScala   = "1.0.3"
-  val swaggerUI      = "2.2.6"
   val dockerItScala  = "0.9.3"
   val scalaUri       = "0.4.16"
   val hamsters       = "1.4.0"
@@ -71,9 +66,6 @@ libraryDependencies ++= Seq(
   "eu.inn"                       %% "fluentd-scala"        % versions.fluentdScala,
   "io.github.scala-hamsters"     %% "hamsters"             % versions.hamsters,
   "com.netaporter"               %% "scala-uri"            % versions.scalaUri,
-  "io.swagger"                   % "swagger-core"          % versions.swaggerCore,
-  "io.swagger"                   %% "swagger-scala-module" % versions.swaggerScala,
-  "org.webjars"                  % "swagger-ui"            % versions.swaggerUI,
   "com.twitter"                  %% "finatra-http"         % versions.finatra,
   "com.twitter"                  %% "finatra-httpclient"   % versions.finatra,
   "com.twitter"                  %% "finatra-jackson"      % versions.finatra,
@@ -119,7 +111,6 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard",
   "-Ywarn-unused",
   "-Ypartial-unification",
-  "-Yliteral-types",
   "-P:clippy:colors=true"
 )
 
