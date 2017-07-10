@@ -1,7 +1,6 @@
 package $package$.controllers
 
 import com.twitter.finagle.http.Request
-import com.twitter.finatra.http.Controller
 
 import javax.inject.{Inject, Singleton}
 import com.jakehschwartz.finatra.swagger.SwaggerController
