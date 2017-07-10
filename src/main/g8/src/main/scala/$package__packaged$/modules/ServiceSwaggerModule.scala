@@ -4,7 +4,6 @@ import com.google.inject.Provides
 import com.jakehschwartz.finatra.swagger.SwaggerModule
 import io.swagger.models.{Contact, Info, Swagger}
 import io.swagger.models.auth.BasicAuthDefinition
-import $package$.ServerMain._
 
 object ServiceSwaggerModule extends SwaggerModule {
   val swaggerUI      = new Swagger()

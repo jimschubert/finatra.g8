@@ -37,13 +37,9 @@ coverageHighlighting := true
 
 scapegoatVersion := "1.3.0"
 
-lazy val scalafmtTask = taskKey[Unit]("run scalafmt")
-scalafmtTask := {
-  import sys.process._
-
-  Seq("sbt", "scalafmt") !
-}
-(compile in Compile) <<= (compile in Compile) dependsOn scalafmtTask
+scalafmtConfig := file(".scalafmt.conf")
+scalafmtOnCompile := true
+scalafmtTestOnCompile := true
 
 lazy val versions = new {
   val finatra        = "2.11.0"

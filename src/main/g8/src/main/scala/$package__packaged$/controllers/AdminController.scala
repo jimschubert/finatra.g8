@@ -4,7 +4,6 @@ import javax.inject.Inject
 
 import $package$.ServerMain._
 import com.twitter.finagle.http.Request
-import com.twitter.finatra.http.Controller
 import com.twitter.inject.annotations.Flag
 import com.jakehschwartz.finatra.swagger.SwaggerController
 import io.swagger.models.Swagger
