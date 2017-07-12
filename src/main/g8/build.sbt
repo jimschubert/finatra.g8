@@ -12,6 +12,8 @@ version := "$service_version$"
 
 scalaVersion := "$scala_version$"
 
+ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
+
 fork in run := true
 
 resolvers += Resolver.sonatypeRepo("releases")
@@ -40,6 +42,7 @@ scapegoatVersion := "1.3.0"
 scalafmtConfig := file(".scalafmt.conf")
 scalafmtOnCompile := true
 scalafmtTestOnCompile := true
+scalafmtVersion := "1.1.0"
 
 lazy val versions = new {
   val finatra        = "2.11.0"
@@ -54,9 +57,11 @@ lazy val versions = new {
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "2.10.0"
   val wireMock       = "2.6.0"
+  val catbird        = "0.15.0"
 }
 
 libraryDependencies ++= Seq(
+  "io.catbird"                   %% "catbird-finagle"      % versions.catbird,
   "com.github.tomakehurst"       % "wiremock"              % versions.wireMock,
   "com.jakehschwartz"            % "finatra-swagger_2.12"  % versions.swaggerFinatra,
   "eu.inn"                       %% "fluentd-scala"        % versions.fluentdScala,
