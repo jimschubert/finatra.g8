@@ -116,7 +116,7 @@ scalacOptions ++= Seq(
 )
 
 bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
-bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL}"""",
+bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
                                s"""addApp "-service.version=$"$"${version.value}"""")
 
 val gitHeadCode = SettingKey[String]("git-head-hash", "The commit hash code of HEAD")
@@ -124,8 +124,8 @@ gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getO
 
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
-dockerBaseImage := "java:8-jre-alpine"
-version in Docker := s"$"$"${version.value}_$"$"${gitHeadCode.value}"
+dockerBaseImage := "openjdk:8-jre-alpine"
+version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
 dockerRepository := Some("vr-docker-registry-usw2.cshtc-vr.com")
