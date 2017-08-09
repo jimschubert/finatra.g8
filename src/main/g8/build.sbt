@@ -37,7 +37,7 @@ initialCommands in console := """
 
 coverageHighlighting := true
 
-scapegoatVersion := "1.3.0"
+scapegoatVersion := "1.3.1"
 
 scalafmtConfig := file(".scalafmt.conf")
 scalafmtOnCompile := true
@@ -51,13 +51,13 @@ lazy val versions = new {
   val mockito        = "1.9.5"
   val scalatest      = "3.0.1"
   val junitInterface = "0.11"
-  val dockerItScala  = "0.9.3"
+  val dockerItScala  = "0.9.4"
   val scalaUri       = "0.4.16"
   val hamsters       = "1.4.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "2.10.0"
-  val wireMock       = "2.6.0"
-  val catbird        = "0.15.0"
+  val swaggerFinatra = "2.11.0"
+  val wireMock       = "2.7.1"
+  val catbird        = "0.16.0"
 }
 
 libraryDependencies ++= Seq(
