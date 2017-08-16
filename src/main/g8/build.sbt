@@ -128,7 +128,7 @@ dockerBaseImage := "openjdk:8-jre-alpine"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
-dockerRepository := Some("vr-docker-registry-usw2.cshtc-vr.com")
+dockerRepository := Some("$docker_repository$")
 dockerAlias := DockerAlias(dockerRepository.value,
                            None,
                            (packageName in Docker).value,
