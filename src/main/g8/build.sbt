@@ -45,7 +45,7 @@ scalafmtTestOnCompile := true
 scalafmtVersion := "1.1.0"
 
 lazy val versions = new {
-  val finatra        = "2.11.0"
+  val finatra        = "2.12.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.9.5"
