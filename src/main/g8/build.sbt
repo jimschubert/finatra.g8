@@ -135,7 +135,7 @@ gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getO
 
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
-dockerBaseImage := "openjdk:8-jre-alpine"
+dockerBaseImage := "openjdk:8-jre-slim"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
