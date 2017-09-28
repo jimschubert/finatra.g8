@@ -42,10 +42,10 @@ scapegoatVersion := "1.3.1"
 scalafmtConfig := file(".scalafmt.conf")
 scalafmtOnCompile := true
 scalafmtTestOnCompile := true
-scalafmtVersion := "1.1.0"
+scalafmtVersion := "1.2.0"
 
 lazy val versions = new {
-  val finatra        = "2.12.0"
+  val finatra        = "2.13.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.9.5"
@@ -53,10 +53,10 @@ lazy val versions = new {
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.4"
   val scalaUri       = "0.4.16"
-  val hamsters       = "1.4.0"
+  val hamsters       = "1.4.1"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "2.11.0"
-  val wireMock       = "2.7.1"
+  val swaggerFinatra = "2.12.0"
+  val wireMock       = "2.8.0"
   val catbird        = "0.16.0"
 }
 
@@ -101,21 +101,32 @@ clippyColorsEnabled := true
 
 scalacOptions ++= Seq(
   "-target:jvm-1.8",
-  "-encoding",
-  "UTF-8",
-  "-unchecked",
-  "-deprecation",
-  "-Xfuture",
-  "-Yno-adapted-args",
-  "-Ywarn-dead-code",
-  "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard",
-  "-Ywarn-unused",
-  "-Ypartial-unification",
-  "-P:clippy:colors=true"
+    "-encoding",
+    "UTF-8",
+    "-unchecked",
+    "-language:existentials",
+    "-language:experimental.macros",
+    "-language:higherKinds",
+    "-language:implicitConversions",
+    "-deprecation",
+    "-explaintypes",
+    "-feature",
+    "-Xcheckinit",
+    "-Xfuture",
+    "-Xlint",
+    "-Yno-adapted-args",
+    "-Ywarn-dead-code",
+    "-Ywarn-numeric-widen",
+    "-Ywarn-value-discard",
+    "-Ywarn-unused",
+    "-Ypartial-unification",
+    "-P:clippy:colors=true"
 )
 
-bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
+// bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
+bashScriptExtraDefines ++= Seq("""addJava "-Dnetworkaddress.cache.ttl=60"""",
+                               """addJava "-XX:+UnlockExperimentalVMOptions"""",
+                               """addJava "-XX:+UseCGroupMemoryLimitForHeap"""")
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
                                s"""addApp "-service.version=$"$"${version.value}"""")
 
@@ -124,7 +135,7 @@ gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getO
 
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
-dockerBaseImage := "openjdk:8-jre-alpine"
+dockerBaseImage := "openjdk:8-jre-slim"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
