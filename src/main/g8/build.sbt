@@ -49,15 +49,15 @@ lazy val versions = new {
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.9.5"
-  val scalatest      = "3.0.1"
+  val scalatest      = "3.0.4"
   val junitInterface = "0.11"
-  val dockerItScala  = "0.9.4"
+  val dockerItScala  = "0.9.6"
   val scalaUri       = "0.4.16"
-  val hamsters       = "1.4.1"
+  val hamsters       = "1.5.1"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "2.12.0"
+  val swaggerFinatra = "2.13.0"
   val wireMock       = "2.8.0"
-  val catbird        = "0.16.0"
+  val catbird        = "0.18.0"
 }
 
 libraryDependencies ++= Seq(
