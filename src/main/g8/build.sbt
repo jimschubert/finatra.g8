@@ -56,7 +56,7 @@ lazy val versions = new {
   val hamsters       = "1.5.1"
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "2.13.0"
-  val wireMock       = "2.8.0"
+  val wireMock       = "2.9.0"
   val catbird        = "0.18.0"
 }
 
@@ -128,6 +128,7 @@ bashScriptExtraDefines ++= Seq("""addJava "-Dnetworkaddress.cache.ttl=60"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
                                """addJava "-XX:+UseCGroupMemoryLimitForHeap"""")
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
+                               """addApp "-swagger.docs.endpoint=$"$"${SWAGGER_DOC_PATH:-/$name;format="norm,word"$/docs}"""",
                                s"""addApp "-service.version=$"$"${version.value}"""")
 
 val gitHeadCode = SettingKey[String]("git-head-hash", "The commit hash code of HEAD")
@@ -155,9 +156,7 @@ dockerBuildOptions := Seq(
 )
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("LABEL", s"version=$"$"${version.value}"),
-  Cmd("ENV", "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$"),
-  Cmd("RUN", """if test -f /etc/alpine-release; then apk update --no-progress && apk upgrade -v;fi"""),
-  Cmd("RUN", """if test -f /etc/alpine-release; then apk add bash;fi""")
+  Cmd("ENV", "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$")
 ) ++ dockerCommands.value.drop(1)
 
 // MicroSites
