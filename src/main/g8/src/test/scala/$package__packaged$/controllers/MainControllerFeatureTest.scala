@@ -9,12 +9,10 @@ class MainControllerFeatureTest extends FeatureTest {
 
   override val server = new EmbeddedHttpServer(new Server)
 
-  "Server" should {
-    "respond" in {
-      server.httpGet(
-        path = "/",
-        andExpect = Ok,
-        withBody = "{\"message\":\"success\"}")
-    }
+  test("Server should respond") {
+    server.httpGet(
+      path = "/",
+      andExpect = Ok,
+      withBody = "{\"message\":\"success\"}")
   }
 }
