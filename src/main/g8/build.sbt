@@ -45,10 +45,10 @@ scalafmtTestOnCompile := true
 scalafmtVersion := "1.2.0"
 
 lazy val versions = new {
-  val finatra        = "2.13.0"
+  val finatra        = "17.10.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
-  val mockito        = "1.9.5"
+  val mockito        = "1.10.19"
   val scalatest      = "3.0.4"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.6"
@@ -56,39 +56,40 @@ lazy val versions = new {
   val hamsters       = "1.5.1"
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "2.13.0"
-  val wireMock       = "2.9.0"
-  val catbird        = "0.18.0"
+  val wireMock       = "2.10.1"
+  val catbird        = "0.19.0"
 }
 
 libraryDependencies ++= Seq(
-  "io.catbird"                   %% "catbird-finagle"      % versions.catbird,
-  "com.github.tomakehurst"       % "wiremock"              % versions.wireMock,
-  "com.jakehschwartz"            % "finatra-swagger_2.12"  % versions.swaggerFinatra,
-  "eu.inn"                       %% "fluentd-scala"        % versions.fluentdScala,
-  "io.github.scala-hamsters"     %% "hamsters"             % versions.hamsters,
-  "com.netaporter"               %% "scala-uri"            % versions.scalaUri,
-  "com.twitter"                  %% "finatra-http"         % versions.finatra,
-  "com.twitter"                  %% "finatra-httpclient"   % versions.finatra,
-  "com.twitter"                  %% "finatra-jackson"      % versions.finatra,
-  "ch.qos.logback"               % "logback-classic"       % versions.logback,
-  "com.twitter"                  %% "finatra-http"    % versions.finatra % "test",
-  "com.twitter"                  %% "finatra-jackson" % versions.finatra % "test",
-  "com.twitter"                  %% "inject-server"   % versions.finatra % "test",
-  "com.twitter"                  %% "inject-app"      % versions.finatra % "test",
-  "com.twitter"                  %% "inject-core"     % versions.finatra % "test",
-  "com.twitter"                  %% "inject-modules"  % versions.finatra % "test",
-  "com.google.inject.extensions" % "guice-testlib"    % versions.guice   % "test",
-  "com.twitter" %% "finatra-http"    % versions.finatra % "test" classifier "tests",
-  "com.twitter" %% "finatra-jackson" % versions.finatra % "test" classifier "tests",
-  "com.twitter" %% "inject-server"   % versions.finatra % "test" classifier "tests",
-  "com.twitter" %% "inject-app"      % versions.finatra % "test" classifier "tests",
-  "com.twitter" %% "inject-core"     % versions.finatra % "test" classifier "tests",
-  "com.twitter" %% "inject-modules"  % versions.finatra % "test" classifier "tests",
-  "org.mockito"   % "mockito-core"                 % versions.mockito        % "test",
-  "org.scalatest" %% "scalatest"                   % versions.scalatest      % "test",
-  "com.novocode"  % "junit-interface"              % versions.junitInterface % "test",
-  "com.whisk"     %% "docker-testkit-scalatest"    % versions.dockerItScala  % "test",
-  "com.whisk"     %% "docker-testkit-impl-spotify" % versions.dockerItScala  % "test"
+  "io.catbird"                   %% "catbird-finagle"                % versions.catbird,
+  "com.github.tomakehurst"       % "wiremock"                        % versions.wireMock,
+  "com.jakehschwartz"            % "finatra-swagger_2.12"            % versions.swaggerFinatra,
+  "eu.inn"                       %% "fluentd-scala"                  % versions.fluentdScala,
+  "io.github.scala-hamsters"     %% "hamsters"                       % versions.hamsters,
+  "com.netaporter"               %% "scala-uri"                      % versions.scalaUri,
+  "com.twitter"                  %% "finatra-http"                   % versions.finatra,
+  "com.twitter"                  %% "finatra-httpclient"             % versions.finatra,
+  "com.twitter"                  %% "finatra-jackson"                % versions.finatra,
+  "ch.qos.logback"               % "logback-classic"                 % versions.logback,
+  "com.twitter"                  %% "twitter-server-logback-classic" % versions.finatra,
+  "com.twitter"                  %% "finatra-http"                   % versions.finatra % "test",
+  "com.twitter"                  %% "finatra-jackson"                % versions.finatra % "test",
+  "com.twitter"                  %% "inject-server"                  % versions.finatra % "test",
+  "com.twitter"                  %% "inject-app"                     % versions.finatra % "test",
+  "com.twitter"                  %% "inject-core"                    % versions.finatra % "test",
+  "com.twitter"                  %% "inject-modules"                 % versions.finatra % "test",
+  "com.google.inject.extensions" % "guice-testlib"                   % versions.guice   % "test",
+  "com.twitter"                  %% "finatra-http"                   % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "finatra-jackson"                % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-server"                  % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-app"                     % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-core"                    % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-modules"                 % versions.finatra % "test" classifier "tests",
+  "org.mockito"                  % "mockito-core"                    % versions.mockito        % "test",
+  "org.scalatest"                %% "scalatest"                      % versions.scalatest      % "test",
+  "com.novocode"                 % "junit-interface"                 % versions.junitInterface % "test",
+  "com.whisk"                    %% "docker-testkit-scalatest"       % versions.dockerItScala  % "test",
+  "com.whisk"                    %% "docker-testkit-impl-spotify"    % versions.dockerItScala  % "test"
 )
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
