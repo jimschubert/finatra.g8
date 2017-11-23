@@ -45,7 +45,7 @@ scalafmtTestOnCompile := true
 scalafmtVersion := "1.2.0"
 
 lazy val versions = new {
-  val finatra        = "17.10.0"
+  val finatra        = "17.11.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -53,17 +53,25 @@ lazy val versions = new {
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.6"
   val scalaUri       = "0.4.16"
-  val hamsters       = "1.5.1"
+  val hamsters       = "2.1.1"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "2.13.0"
+  val swaggerCore    = "1.5.16"
+  val swaggerScala   = "1.0.4"
+  val swaggerUI      = "3.2.0"
+  val bytebuddy      = "1.7.5"
+  // val swaggerFinatra = "2.13.0"
   val wireMock       = "2.10.1"
   val catbird        = "0.19.0"
 }
 
 libraryDependencies ++= Seq(
+  "io.swagger"                   % "swagger-core"                    % versions.swaggerCore,
+  "io.swagger"                   %% "swagger-scala-module"           % versions.swaggerScala,
+  "org.webjars"                  % "swagger-ui"                      % versions.swaggerUI,
+  "net.bytebuddy"                % "byte-buddy"                      % versions.bytebuddy,
   "io.catbird"                   %% "catbird-finagle"                % versions.catbird,
   "com.github.tomakehurst"       % "wiremock"                        % versions.wireMock,
-  "com.jakehschwartz"            % "finatra-swagger_2.12"            % versions.swaggerFinatra,
+  // "com.jakehschwartz"            % "finatra-swagger_2.12"            % versions.swaggerFinatra,
   "eu.inn"                       %% "fluentd-scala"                  % versions.fluentdScala,
   "io.github.scala-hamsters"     %% "hamsters"                       % versions.hamsters,
   "com.netaporter"               %% "scala-uri"                      % versions.scalaUri,
