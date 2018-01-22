@@ -29,6 +29,7 @@ enablePlugins(AutomateHeaderPlugin,
               GitBranchPrompt,
               MdReleaseNotesFormat,
               RootFolderReleaseNotesStrategy,
+              DockerContainerPlugin,
               MicrositesPlugin)
 
 initialCommands in console := """
@@ -48,7 +49,7 @@ autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
 
 lazy val versions = new {
-  val finatra        = "17.12.0"
+  val finatra        = "18.1.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
