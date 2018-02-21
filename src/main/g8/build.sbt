@@ -12,23 +12,16 @@ version := "$service_version$"
 
 scalaVersion := "$scala_version$"
 
-ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }
-
 fork in run := true
 
 resolvers += Resolver.sonatypeRepo("releases")
 
 resolvers += "maven.twttr.com" at "https://maven.twttr.com"
 
-Revolver.settings
-
-enablePlugins(AutomateHeaderPlugin,
-              JavaAppPackaging,
+enablePlugins(JavaAppPackaging,
               DockerPlugin,
               GitVersioning,
               GitBranchPrompt,
-              MdReleaseNotesFormat,
-              RootFolderReleaseNotesStrategy,
               DockerContainerPlugin,
               MicrositesPlugin)
 
@@ -38,33 +31,35 @@ initialCommands in console := """
 
 coverageHighlighting := true
 
-scapegoatVersion := "1.3.1"
+scapegoatVersion in ThisBuild := "1.3.4"
 
 scalafmtConfig := file(".scalafmt.conf")
 scalafmtOnCompile := true
 scalafmtTestOnCompile := true
-scalafmtVersion := "1.3.0"
+scalafmtVersion := "1.4.0"
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
 
 lazy val versions = new {
-  val finatra        = "18.1.0"
+  val finatra        = "18.2.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
-  val scalatest      = "3.0.4"
+  val scalatest      = "3.0.5"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.6"
   val scalaUri       = "0.4.16"
-  val hamsters       = "2.3.0"
+  val hamsters       = "2.5.0"
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "17.11.0"
-  val wireMock       = "2.12.0"
-  val catbird        = "0.21.0"
+  val wireMock       = "2.15.0"
+  val catbird        = "18.2.0"
+  val scalaErrors    = "1.2"
 }
 
 libraryDependencies ++= Seq(
+  "com.github.mehmetakiftutuncu" %% "errors"                         % versions.scalaErrors,
   "io.catbird"                   %% "catbird-finagle"                % versions.catbird,
   "com.github.tomakehurst"       % "wiremock"                        % versions.wireMock,
   "com.jakehschwartz"            % "finatra-swagger_2.12"            % versions.swaggerFinatra,
