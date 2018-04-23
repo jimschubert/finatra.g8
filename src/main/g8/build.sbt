@@ -40,9 +40,10 @@ scalafmtVersion := "1.4.0"
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
+addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.1")
 
 lazy val versions = new {
-  val finatra        = "18.2.0"
+  val finatra        = "18.4.0"
   val guice          = "4.1.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -50,15 +51,17 @@ lazy val versions = new {
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.6"
   val scalaUri       = "0.4.16"
-  val hamsters       = "2.5.0"
+  val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "17.11.0"
-  val wireMock       = "2.15.0"
-  val catbird        = "18.2.0"
+  val swaggerFinatra = "18.4.0"
+  val wireMock       = "2.17.0"
+  val catbird        = "18.4.0"
   val scalaErrors    = "1.2"
+  val perfolation    = "1.0.0"
 }
 
 libraryDependencies ++= Seq(
+  "com.outr"                     %% "perfolation"                    % versions.perfolation,
   "com.github.mehmetakiftutuncu" %% "errors"                         % versions.scalaErrors,
   "io.catbird"                   %% "catbird-finagle"                % versions.catbird,
   "com.github.tomakehurst"       % "wiremock"                        % versions.wireMock,
@@ -146,7 +149,15 @@ scalacOptions ++= Seq(
     "-Ywarn-unused:privates", // Warn if a private member is unused.
     "-Ywarn-value-discard", // Warn when non-Unit expression results are unused.
     "-P:clippy:colors=true",
-    "-P:socco:out:./target/socco"
+    "-Ycache-plugin-class-loader:last-modified",
+    "-Ycache-macro-class-loader:last-modified",
+    "-P:bm4:no-filtering:y",
+    "-P:bm4:no-map-id:y",
+    "-P:bm4:no-tupling:y",
+    "-P:socco:out:./target/socco",
+    "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
+    "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
+    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.12/api/"
 )
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
