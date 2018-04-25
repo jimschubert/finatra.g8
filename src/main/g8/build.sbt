@@ -193,7 +193,10 @@ dockerBuildOptions := Seq(
 )
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("LABEL", s"version=$"$"${version.value}"),
-  Cmd("ENV", "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$")
+  Cmd(
+    "ENV", 
+    "DOCKER_CONTENT_TRUST=1",
+    "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$")
 ) ++ dockerCommands.value.drop(1)
 
 // MicroSites
