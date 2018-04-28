@@ -40,11 +40,11 @@ scalafmtVersion := "1.4.0"
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
-addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.1")
+addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.2")
 
 lazy val versions = new {
   val finatra        = "18.4.0"
-  val guice          = "4.1.0"
+  val guice          = "4.2.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
   val scalatest      = "3.0.5"
@@ -57,7 +57,7 @@ lazy val versions = new {
   val wireMock       = "2.17.0"
   val catbird        = "18.4.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.0.0"
+  val perfolation    = "1.0.1"
 }
 
 libraryDependencies ++= Seq(
@@ -194,7 +194,7 @@ dockerBuildOptions := Seq(
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("LABEL", s"version=$"$"${version.value}"),
   Cmd(
-    "ENV", 
+    "ENV",
     "DOCKER_CONTENT_TRUST=1",
     "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$")
 ) ++ dockerCommands.value.drop(1)
