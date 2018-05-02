@@ -1,4 +1,5 @@
 import sbt.Keys._
+import com.amazonaws.regions.{Region, Regions}
 import com.typesafe.sbt.packager.docker._
 import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.DockerAlias
 
@@ -23,7 +24,8 @@ enablePlugins(JavaAppPackaging,
               GitVersioning,
               GitBranchPrompt,
               DockerContainerPlugin,
-              MicrositesPlugin)
+              MicrositesPlugin,
+              EcrPlugin)
 
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
@@ -171,14 +173,14 @@ bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
 val gitHeadCode = SettingKey[String]("git-head-hash", "The commit hash code of HEAD")
 gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getOrElse("na")
 
+dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 dockerBaseImage := "openjdk:8-jre-slim"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
-dockerRepository := Some("$docker_repository$")
-dockerAlias := DockerAlias(dockerRepository.value,
+dockerAlias := DockerAlias(None,
                            None,
                            (packageName in Docker).value,
                            Some((version in Docker).value))
@@ -186,7 +188,7 @@ dockerUpdateLatest := false
 dockerBuildOptions := Seq(
   "--force-rm",
   "-t",
-  s"$"$"${dockerRepository.value.get}/$"$"${(packageName in Docker).value}:$"$"${(version in Docker).value}",
+  s"$"$"${(packageName in Docker).value}:$"$"${(version in Docker).value}",
   "--squash",
   "--no-cache",
   "--pull"
@@ -199,6 +201,14 @@ dockerCommands := dockerCommands.value.take(1) ++ Seq(
     "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$")
 ) ++ dockerCommands.value.drop(1)
 
+// AWS ECR support
+region           in Ecr := Region.getRegion(Regions.US_WEST_2)
+repositoryName   in Ecr := (packageName in Docker).value
+localDockerImage in Ecr := (packageName in Docker).value + ":" + (version in Docker).value
+repositoryTags   in Ecr := Seq(version.value)
+push in Ecr := ((push in Ecr) dependsOn (publishLocal in Docker, createRepository in Ecr, login in Ecr)).value
+publish in Docker := (push in Ecr).value
+
 // MicroSites
 micrositeName := "$name$"
 micrositeBaseUrl := "$microsite_base_url$"
@@ -207,3 +217,6 @@ micrositeAuthor := "$maintainer_name$"
 micrositeOrganizationHomepage := "http://www.htc.com"
 micrositeGitHostingService := Other("HICHub")
 micrositeGitHostingUrl := "https://hichub.htc.com"
+
+// License report style
+licenseReportStyleRules := Some("table, th, td {border: 1px solid grey;}")
