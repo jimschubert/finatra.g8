@@ -42,7 +42,7 @@ scalafmtVersion := "1.4.0"
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
-addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.2")
+addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.4")
 
 lazy val versions = new {
   val finatra        = "18.4.0"
@@ -153,6 +153,10 @@ scalacOptions ++= Seq(
     "-P:clippy:colors=true",
     "-Ycache-plugin-class-loader:last-modified",
     "-Ycache-macro-class-loader:last-modified",
+    "-Ybackend-parallelism",
+    s"$"$"${sys.runtime.availableProcessors() * 2}",
+    "-Ybackend-worker-queue",
+    "8",
     "-P:bm4:no-filtering:y",
     "-P:bm4:no-map-id:y",
     "-P:bm4:no-tupling:y",
@@ -165,7 +169,9 @@ scalacOptions ++= Seq(
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
 bashScriptExtraDefines ++= Seq("""addJava "-Dnetworkaddress.cache.ttl=60"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
-                               """addJava "-XX:+UseCGroupMemoryLimitForHeap"""")
+                               """addJava "-XX:+UseCGroupMemoryLimitForHeap"""",
+                               """addJava "-XX:+UseG1GC"""",
+                               """addJava "-XX:+UseStringDeduplication"""")
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
                                """addApp "-swagger.docs.endpoint=$"$"${SWAGGER_DOC_PATH:-/$name;format="norm,word"$/docs}"""",
                                s"""addApp "-service.version=$"$"${version.value}"""")
@@ -205,7 +211,7 @@ dockerCommands := dockerCommands.value.take(1) ++ Seq(
 region           in Ecr := Region.getRegion(Regions.US_WEST_2)
 repositoryName   in Ecr := (packageName in Docker).value
 localDockerImage in Ecr := (packageName in Docker).value + ":" + (version in Docker).value
-repositoryTags   in Ecr := Seq(version.value)
+repositoryTags   in Ecr := Seq((version in Docker).value)
 push in Ecr := ((push in Ecr) dependsOn (publishLocal in Docker, createRepository in Ecr, login in Ecr)).value
 publish in Docker := (push in Ecr).value
 
