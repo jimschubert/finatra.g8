@@ -25,7 +25,7 @@ object ServerSentEventsResponse {
   }
 }
 
-case class ServerSentEvent[A](
+final case class ServerSentEvent[A](
     data: A,
     id: Option[String] = None,
     event: Option[String] = None,

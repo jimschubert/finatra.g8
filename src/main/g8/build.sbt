@@ -33,19 +33,17 @@ initialCommands in console := """
 
 coverageHighlighting := true
 
-scapegoatVersion in ThisBuild := "1.3.4"
+scapegoatVersion in ThisBuild := "1.3.5"
 
-scalafmtConfig := file(".scalafmt.conf")
+scalafmtConfig := Some(file(".scalafmt.conf"))
 scalafmtOnCompile := true
-scalafmtTestOnCompile := true
-scalafmtVersion := "1.4.0"
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.4")
 
 lazy val versions = new {
-  val finatra        = "18.4.0"
+  val finatra        = "18.5.0"
   val guice          = "4.2.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -57,9 +55,9 @@ lazy val versions = new {
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "18.4.0"
   val wireMock       = "2.17.0"
-  val catbird        = "18.4.0"
+  val catbird        = "18.5.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.0.1"
+  val perfolation    = "1.0.2"
 }
 
 libraryDependencies ++= Seq(
@@ -201,6 +199,7 @@ dockerBuildOptions := Seq(
 )
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("LABEL", s"version=$"$"${version.value}"),
+  Cmd("LABEL", "owner_team=$owner_team$"),
   Cmd(
     "ENV",
     "DOCKER_CONTENT_TRUST=1",
