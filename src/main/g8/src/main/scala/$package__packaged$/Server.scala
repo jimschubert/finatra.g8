@@ -20,7 +20,7 @@ class Server extends HttpServer {
   override protected def modules = Seq(ServiceSwaggerModule)
 
   override def defaultFinatraHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => p":$"$"$x")
-  override val name                   = "$package$ $name;format="Camel"$"
+  override val name                   = "$package$-$name;format="Camel"$"
 
   override def configureHttp(router: HttpRouter): Unit = {
     router
