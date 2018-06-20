@@ -33,6 +33,11 @@ initialCommands in console := """
 
 coverageHighlighting := true
 
+coverageEnabled := true
+coverageMinimum := 70
+coverageFailOnMinimum := true
+coverageExcludedPackages := "$package$.sse;$package$.util;$package$.client".replace("\\\\.","\\\\.")
+
 scapegoatVersion in ThisBuild := "1.3.5"
 
 scalafmtConfig := Some(file(".scalafmt.conf"))
@@ -43,7 +48,7 @@ addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.4")
 
 lazy val versions = new {
-  val finatra        = "18.5.0"
+  val finatra        = "18.6.0"
   val guice          = "4.2.0"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -53,17 +58,22 @@ lazy val versions = new {
   val scalaUri       = "0.4.16"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.4.0"
+  val swaggerFinatra = "18.6.0"
   val wireMock       = "2.18.0"
-  val catbird        = "18.5.0"
+  val catbird        = "18.6.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.0.2"
+  val mouse          = "0.17"
+  val jacksonScala   = "2.9.5"
 }
 
 libraryDependencies ++= Seq(
+  "com.fasterxml.jackson.module" %% "jackson-module-scala"           % versions.jacksonScala,
+  "org.typelevel"                %% "mouse"                          % versions.mouse,
   "com.outr"                     %% "perfolation"                    % versions.perfolation,
   "com.github.mehmetakiftutuncu" %% "errors"                         % versions.scalaErrors,
   "io.catbird"                   %% "catbird-finagle"                % versions.catbird,
+  "io.catbird"                   %% "catbird-effect"                 % versions.catbird,
   "com.github.tomakehurst"       % "wiremock"                        % versions.wireMock,
   "com.jakehschwartz"            % "finatra-swagger_2.12"            % versions.swaggerFinatra,
   "eu.inn"                       %% "fluentd-scala"                  % versions.fluentdScala,
