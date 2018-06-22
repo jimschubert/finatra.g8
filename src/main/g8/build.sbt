@@ -58,17 +58,15 @@ lazy val versions = new {
   val scalaUri       = "0.4.16"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.6.0"
+  val swaggerFinatra = "18.4.0"
   val wireMock       = "2.18.0"
   val catbird        = "18.6.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.0.2"
   val mouse          = "0.17"
-  val jacksonScala   = "2.9.5"
 }
 
 libraryDependencies ++= Seq(
-  "com.fasterxml.jackson.module" %% "jackson-module-scala"           % versions.jacksonScala,
   "org.typelevel"                %% "mouse"                          % versions.mouse,
   "com.outr"                     %% "perfolation"                    % versions.perfolation,
   "com.github.mehmetakiftutuncu" %% "errors"                         % versions.scalaErrors,
