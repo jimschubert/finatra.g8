@@ -33,7 +33,6 @@ initialCommands in console := """
 
 coverageHighlighting := true
 
-coverageEnabled := true
 coverageMinimum := 70
 coverageFailOnMinimum := true
 coverageExcludedPackages := "$package$.sse;$package$.util;$package$.client".replace("\\\\.","\\\\.")
