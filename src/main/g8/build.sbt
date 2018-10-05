@@ -35,70 +35,71 @@ coverageHighlighting := true
 
 coverageMinimum := 70
 coverageFailOnMinimum := true
-coverageExcludedPackages := "$package$.sse;$package$.util;$package$.client".replace("\\\\.","\\\\.")
+coverageExcludedPackages := ".*sse*.;.*util*.;.*client*."
 
-scapegoatVersion in ThisBuild := "1.3.5"
+scapegoatVersion in ThisBuild := "1.3.8"
 
 scalafmtConfig := Some(file(".scalafmt.conf"))
 scalafmtOnCompile := true
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
-addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.2.4")
+addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M2")
 
 lazy val versions = new {
-  val finatra        = "18.6.0"
-  val guice          = "4.2.0"
+  val finatra        = "18.9.1"
+  val guice          = "4.2.1"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
   val scalatest      = "3.0.5"
   val junitInterface = "0.11"
-  val dockerItScala  = "0.9.6"
-  val scalaUri       = "0.4.16"
+  val dockerItScala  = "0.9.8"
+  val scalaUri       = "1.3.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.4.0"
-  val wireMock       = "2.18.0"
-  val catbird        = "18.6.0"
+  val swaggerFinatra = "18.8.0"
+  val wireMock       = "2.19.0"
+  val catbird        = "18.9.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.0.2"
-  val mouse          = "0.17"
+  val perfolation    = "1.0.4"
+  val mouse          = "0.18"
 }
 
 libraryDependencies ++= Seq(
-  "org.typelevel"                %% "mouse"                          % versions.mouse,
-  "com.outr"                     %% "perfolation"                    % versions.perfolation,
-  "com.github.mehmetakiftutuncu" %% "errors"                         % versions.scalaErrors,
-  "io.catbird"                   %% "catbird-finagle"                % versions.catbird,
-  "io.catbird"                   %% "catbird-effect"                 % versions.catbird,
-  "com.github.tomakehurst"       % "wiremock"                        % versions.wireMock,
-  "com.jakehschwartz"            % "finatra-swagger_2.12"            % versions.swaggerFinatra,
-  "eu.inn"                       %% "fluentd-scala"                  % versions.fluentdScala,
-  "io.github.scala-hamsters"     %% "hamsters"                       % versions.hamsters,
-  "com.netaporter"               %% "scala-uri"                      % versions.scalaUri,
-  "com.twitter"                  %% "finatra-http"                   % versions.finatra,
-  "com.twitter"                  %% "finatra-httpclient"             % versions.finatra,
-  "com.twitter"                  %% "finatra-jackson"                % versions.finatra,
-  "ch.qos.logback"               % "logback-classic"                 % versions.logback,
-  "com.twitter"                  %% "twitter-server-logback-classic" % versions.finatra,
-  "com.twitter"                  %% "finatra-http"                   % versions.finatra % "test",
-  "com.twitter"                  %% "finatra-jackson"                % versions.finatra % "test",
-  "com.twitter"                  %% "inject-server"                  % versions.finatra % "test",
-  "com.twitter"                  %% "inject-app"                     % versions.finatra % "test",
-  "com.twitter"                  %% "inject-core"                    % versions.finatra % "test",
-  "com.twitter"                  %% "inject-modules"                 % versions.finatra % "test",
-  "com.google.inject.extensions" % "guice-testlib"                   % versions.guice   % "test",
-  "com.twitter"                  %% "finatra-http"                   % versions.finatra % "test" classifier "tests",
-  "com.twitter"                  %% "finatra-jackson"                % versions.finatra % "test" classifier "tests",
-  "com.twitter"                  %% "inject-server"                  % versions.finatra % "test" classifier "tests",
-  "com.twitter"                  %% "inject-app"                     % versions.finatra % "test" classifier "tests",
-  "com.twitter"                  %% "inject-core"                    % versions.finatra % "test" classifier "tests",
-  "com.twitter"                  %% "inject-modules"                 % versions.finatra % "test" classifier "tests",
-  "org.mockito"                  % "mockito-core"                    % versions.mockito        % "test",
-  "org.scalatest"                %% "scalatest"                      % versions.scalatest      % "test",
-  "com.novocode"                 % "junit-interface"                 % versions.junitInterface % "test",
-  "com.whisk"                    %% "docker-testkit-scalatest"       % versions.dockerItScala  % "test",
-  "com.whisk"                    %% "docker-testkit-impl-spotify"    % versions.dockerItScala  % "test"
+  "com.jakehschwartz"            %% "finatra-swagger"                 % versions.swaggerFinatra,
+  "org.typelevel"                %% "mouse"                           % versions.mouse,
+  "com.outr"                     %% "perfolation"                     % versions.perfolation,
+  "com.github.mehmetakiftutuncu" %% "errors"                          % versions.scalaErrors,
+  "io.catbird"                   %% "catbird-finagle"                 % versions.catbird,
+  "io.catbird"                   %% "catbird-effect"                  % versions.catbird,
+  "com.github.tomakehurst"       % "wiremock"                         % versions.wireMock,
+  "com.jakehschwartz"            % "finatra-swagger_2.12"             % versions.swaggerFinatra,
+  "eu.inn"                       %% "fluentd-scala"                   % versions.fluentdScala,
+  "io.github.scala-hamsters"     %% "hamsters"                        % versions.hamsters,
+  "io.lemonlabs"                 %% "scala-uri"                       % versions.scalaUri,
+  "com.twitter"                  %% "finatra-http"                    % versions.finatra,
+  "com.twitter"                  %% "finatra-httpclient"              % versions.finatra,
+  "com.twitter"                  %% "finatra-jackson"                 % versions.finatra,
+  "ch.qos.logback"               % "logback-classic"                  % versions.logback,
+  "com.twitter"                  %% "twitter-server-logback-classic"  % versions.finatra,
+  "com.twitter"                  %% "finatra-http"                    % versions.finatra % "test",
+  "com.twitter"                  %% "finatra-jackson"                 % versions.finatra % "test",
+  "com.twitter"                  %% "inject-server"                   % versions.finatra % "test",
+  "com.twitter"                  %% "inject-app"                      % versions.finatra % "test",
+  "com.twitter"                  %% "inject-core"                     % versions.finatra % "test",
+  "com.twitter"                  %% "inject-modules"                  % versions.finatra % "test",
+  "com.google.inject.extensions" % "guice-testlib"                    % versions.guice   % "test",
+  "com.twitter"                  %% "finatra-http"                    % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "finatra-jackson"                 % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-server"                   % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-app"                      % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-core"                     % versions.finatra % "test" classifier "tests",
+  "com.twitter"                  %% "inject-modules"                  % versions.finatra % "test" classifier "tests",
+  "org.mockito"                  % "mockito-core"                     % versions.mockito        % "test",
+  "org.scalatest"                %% "scalatest"                       % versions.scalatest      % "test",
+  "com.novocode"                 % "junit-interface"                  % versions.junitInterface % "test",
+  "com.whisk"                    %% "docker-testkit-scalatest"        % versions.dockerItScala  % "test",
+  "com.whisk"                    %% "docker-testkit-impl-docker-java" % versions.dockerItScala  % "test"
 )
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
@@ -168,11 +169,12 @@ scalacOptions ++= Seq(
     "-P:socco:out:./target/socco",
     "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
     "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
-    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.12/api/"
+    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/"
 )
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
-bashScriptExtraDefines ++= Seq("""addJava "-Dnetworkaddress.cache.ttl=60"""",
+bashScriptExtraDefines ++= Seq("""addJava "-server"""",
+                               """addJava "-Dnetworkaddress.cache.ttl=60"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
                                """addJava "-XX:+UseCGroupMemoryLimitForHeap"""",
                                """addJava "-XX:+UseG1GC"""",
@@ -187,7 +189,8 @@ gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getO
 dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
-dockerBaseImage := "openjdk:8-jre-slim"
+// dockerBaseImage := "openjdk:8-jre-slim"
+dockerBaseImage := "rayyildiz/graalvm:1.0.0-rc6"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
@@ -200,13 +203,13 @@ dockerBuildOptions := Seq(
   "--force-rm",
   "-t",
   s"$"$"${(packageName in Docker).value}:$"$"${(version in Docker).value}",
-  "--squash",
   "--no-cache",
   "--pull"
 )
 dockerCommands := dockerCommands.value.take(1) ++ Seq(
   Cmd("LABEL", s"version=$"$"${version.value}"),
   Cmd("LABEL", "owner_team=$owner_team$"),
+  Cmd("LABEL", s"""build_id=$"$"${Option(System.getProperty("build_id")).getOrElse("NA")}"""),
   Cmd(
     "ENV",
     "DOCKER_CONTENT_TRUST=1",

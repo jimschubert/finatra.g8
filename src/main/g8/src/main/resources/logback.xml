@@ -70,6 +70,14 @@
         <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
         <appender-ref ref="ASYNC-ACCESS"/>
     </logger>
+    <logger name="$package$.services" level="$"$"${LOG_LEVEL:-info}">
+        <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
+        <appender-ref ref="ASYNC-ACCESS"/>
+    </logger>
+    <logger name="$package$.modules" level="$"$"${LOG_LEVEL:-info}">
+        <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
+        <appender-ref ref="ASYNC-ACCESS"/>
+    </logger>
 
     <logger name="com.twitter.finatra.http.filters.AccessLoggingFilter"
             level="info"

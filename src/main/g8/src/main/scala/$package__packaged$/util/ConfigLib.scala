@@ -1,7 +1,7 @@
 package $package$.util
 
-import com.netaporter.uri.Uri
-import com.netaporter.uri.Uri.parse
+import io.lemonlabs.uri.Url
+import Url._
 
 import scala.util.control.Exception._
 
@@ -31,8 +31,8 @@ class BooleanDataConverter extends DataConverter[Boolean] {
 }
 
 // TODO - should handle the exception cases
-class UriDataConverter extends DataConverter[Uri] {
-  def convert(v: String): Option[Uri] = Some(parse(v))
+class UriDataConverter extends DataConverter[Url] {
+  def convert(v: String): Option[Url] = allCatch.opt(parse(v))
 }
 
 object DataConverter {
