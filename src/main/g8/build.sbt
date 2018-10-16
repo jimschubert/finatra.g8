@@ -43,8 +43,9 @@ scalafmtConfig := Some(file(".scalafmt.conf"))
 scalafmtOnCompile := true
 
 autoCompilerPlugins := true
-addCompilerPlugin("com.criteo.socco" %% "socco-plugin" % "0.1.9")
+addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M2")
+addCompilerPlugin(("io.tryp"         % "splain"              % "0.3.4").cross(CrossVersion.patch))
 
 lazy val versions = new {
   val finatra        = "18.9.1"
@@ -169,7 +170,8 @@ scalacOptions ++= Seq(
     "-P:socco:out:./target/socco",
     "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
     "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
-    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/"
+    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/",
+    "-P:splain:all:true"
 )
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
