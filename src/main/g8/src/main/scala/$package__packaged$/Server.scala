@@ -24,9 +24,9 @@ class Server extends HttpServer {
 
   override def configureHttp(router: HttpRouter): Unit = {
     router
-      .filter[CommonFilters]
       .filter[LoggingMDCFilter[Request, Response]]
       .filter[TraceIdMDCFilter[Request, Response]]
+      .filter[CommonFilters]
       .add[DocsController]
       .add[AdminController]
       .add[MainController]
