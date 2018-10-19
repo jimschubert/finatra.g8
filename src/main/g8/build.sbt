@@ -44,7 +44,7 @@ scalafmtOnCompile := true
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
-addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M2")
+addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
 addCompilerPlugin(("io.tryp"         % "splain"              % "0.3.4").cross(CrossVersion.patch))
 
 lazy val versions = new {
@@ -58,9 +58,9 @@ lazy val versions = new {
   val scalaUri       = "1.3.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.8.0"
+  val swaggerFinatra = "18.9.0"
   val wireMock       = "2.19.0"
-  val catbird        = "18.9.0"
+  val catbird        = "18.9.1"
   val scalaErrors    = "1.2"
   val perfolation    = "1.0.4"
   val mouse          = "0.18"
@@ -74,7 +74,6 @@ libraryDependencies ++= Seq(
   "io.catbird"                   %% "catbird-finagle"                 % versions.catbird,
   "io.catbird"                   %% "catbird-effect"                  % versions.catbird,
   "com.github.tomakehurst"       % "wiremock"                         % versions.wireMock,
-  "com.jakehschwartz"            % "finatra-swagger_2.12"             % versions.swaggerFinatra,
   "eu.inn"                       %% "fluentd-scala"                   % versions.fluentdScala,
   "io.github.scala-hamsters"     %% "hamsters"                        % versions.hamsters,
   "io.lemonlabs"                 %% "scala-uri"                       % versions.scalaUri,
