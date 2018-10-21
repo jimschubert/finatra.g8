@@ -48,7 +48,7 @@ addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
 addCompilerPlugin(("io.tryp"         % "splain"              % "0.3.4").cross(CrossVersion.patch))
 
 lazy val versions = new {
-  val finatra        = "18.9.1"
+  val finatra        = "18.10.0"
   val guice          = "4.2.1"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -60,7 +60,7 @@ lazy val versions = new {
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "18.9.0"
   val wireMock       = "2.19.0"
-  val catbird        = "18.9.1"
+  val catbird        = "18.10.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.0.4"
   val mouse          = "0.18"
@@ -191,7 +191,7 @@ dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage := "rayyildiz/graalvm:1.0.0-rc6"
+dockerBaseImage := "findepi/graalvm:1.0.0-rc8"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
