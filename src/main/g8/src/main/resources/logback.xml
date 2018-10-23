@@ -59,7 +59,7 @@
     <!-- ===================================================== -->
 
     <!-- Root Config -->
-    <root level="warn">
+    <root level="$"$"${LOG_LEVEL:-warn}">
         <appender-ref ref="ASYNC-SERVICE"/>
     </root>
 
@@ -70,16 +70,8 @@
         <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
         <appender-ref ref="ASYNC-ACCESS"/>
     </logger>
-    <logger name="$package$.services" level="$"$"${LOG_LEVEL:-info}">
-        <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
-        <appender-ref ref="ASYNC-ACCESS"/>
-    </logger>
-    <logger name="$package$.modules" level="$"$"${LOG_LEVEL:-info}">
-        <!-- <appender-ref ref="ASYNC-FLUENTD-SERVICE"/> -->
-        <appender-ref ref="ASYNC-ACCESS"/>
-    </logger>
 
-    <logger name="com.twitter.finatra.http.filters.AccessLoggingFilter"
+    <logger name="$package$.filters.ACLoggingFilter"
             level="info"
             additivity="false">
         <appender-ref ref="ASYNC-ACCESS"/>
