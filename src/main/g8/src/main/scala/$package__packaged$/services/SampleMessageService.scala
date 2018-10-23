@@ -1,11 +1,21 @@
 package $package$.services
 
-import javax.inject.Singleton
+import com.twitter.inject.Logging
 import io.catbird.util.Rerunnable
+import javax.inject.Singleton
+import perfolation._
 
 @Singleton
-class SampleMessageService extends RerunnableService[String, SMessage] {
-  override def apply(request: String): Rerunnable[SMessage] = Rerunnable.const(SMessage(request))
+class SampleMessageService extends RerunnableService[String, SMessage] with Logging {
+  override def apply(request: String): Rerunnable[SMessage] =
+    request match {
+      case "anonymous" => Rerunnable.const(FailureMessage("Your name, please?"))
+      case "unknown"   => Rerunnable.raiseError(new Error("UNKNOWN-NOT-ALLOWED"))
+      case x           => Rerunnable.const(GreetingsMessage(p"Hello, $"$"$x"))
+    }
 }
 
-final case class SMessage(message: String)
+sealed trait SMessage
+
+final case class GreetingsMessage(message: String) extends SMessage
+final case class FailureMessage(message: String)   extends SMessage
