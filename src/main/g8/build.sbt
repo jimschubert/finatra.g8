@@ -45,11 +45,12 @@ scalafmtOnCompile := true
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
-addCompilerPlugin(("io.tryp"         % "splain"              % "0.3.4").cross(CrossVersion.patch))
+addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.2")
+// addCompilerPlugin(("io.tryp"         % "splain"              % "0.3.4").cross(CrossVersion.patch))
 
 lazy val versions = new {
-  val finatra        = "18.10.0"
-  val guice          = "4.2.1"
+  val finatra        = "18.11.0"
+  val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
   val scalatest      = "3.0.5"
@@ -58,12 +59,12 @@ lazy val versions = new {
   val scalaUri       = "1.3.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.9.0"
+  val swaggerFinatra = "18.11.0"
   val wireMock       = "2.19.0"
-  val catbird        = "18.10.0"
+  val catbird        = "18.11.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.0.4"
-  val mouse          = "0.18"
+  val mouse          = "0.19"
 }
 
 libraryDependencies ++= Seq(
@@ -169,8 +170,8 @@ scalacOptions ++= Seq(
     "-P:socco:out:./target/socco",
     "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
     "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
-    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/",
-    "-P:splain:all:true"
+    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/"
+    // "-P:splain:all:true"
 )
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
@@ -191,7 +192,7 @@ dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage := "findepi/graalvm:1.0.0-rc8"
+dockerBaseImage := "findepi/graalvm:1.0.0-rc9"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
