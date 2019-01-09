@@ -11,12 +11,16 @@ import com.twitter.finatra.http.HttpServer
 import com.twitter.finatra.http.filters.{LoggingMDCFilter, TraceIdMDCFilter}
 import com.twitter.finatra.http.routing.HttpRouter
 import com.twitter.util.Var
+import monix.execution.Scheduler
+import monix.execution.schedulers.SchedulerService
 import perfolation._
 
 object ServerMain extends Server
 
 class Server extends HttpServer {
   val health = Var("good")
+
+  implicit lazy val scheduler: SchedulerService = Scheduler.io("$package$")
 
   override protected def modules = Seq(ServiceSwaggerModule)
 

@@ -30,14 +30,19 @@ class BooleanDataConverter extends DataConverter[Boolean] {
   def convert(v: String): Option[Boolean] = allCatch.opt(v.toBoolean)
 }
 
+class LongDataConverter extends DataConverter[Long] {
+  def convert(v: String): Option[Long] = allCatch.opt(v.toLong)
+}
+
 // TODO - should handle the exception cases
 class UriDataConverter extends DataConverter[Url] {
   def convert(v: String): Option[Url] = allCatch.opt(parse(v))
 }
 
 object DataConverter {
-  implicit val intConverter  = new IntDataConverter()
-  implicit val strConverter  = new StringDataConverter()
-  implicit val boolConverter = new BooleanDataConverter()
-  implicit val uriConverter  = new UriDataConverter()
+  implicit val intConverter                     = new IntDataConverter()
+  implicit val strConverter                     = new StringDataConverter()
+  implicit val boolConverter                    = new BooleanDataConverter()
+  implicit val uriConverter                     = new UriDataConverter()
+  implicit val longConverter: LongDataConverter = new LongDataConverter()
 }
