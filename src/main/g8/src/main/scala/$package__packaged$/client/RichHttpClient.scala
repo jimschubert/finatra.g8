@@ -10,7 +10,7 @@ import mouse.boolean._
 
 object RichHttpClient {
   /* Public */
-  val shouldEnableFastFail =
+  val shouldEnableFastFail: Boolean =
     getConfig[Boolean]("FAIL_FAST_ENABLE").getOrElse(false)
 
   def newClientService(dest: String): Service[Request, Response] =

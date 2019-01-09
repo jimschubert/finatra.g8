@@ -2,16 +2,10 @@ import sbt.Keys._
 import com.amazonaws.regions.{Region, Regions}
 import com.typesafe.sbt.packager.docker._
 import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.DockerAlias
+import com.typesafe.sbt.SbtLicenseReport.autoImport._
+import org.programmiersportgruppe.sbt.testreporter.TabularTestReporterPlugin.autoImport.{Html => THtml, _}
 
 import scala.language.postfixOps
-
-name := "$name$"
-
-organization := "$organization$"
-
-version := "$service_version$"
-
-scalaVersion := "$scala_version$"
 
 fork in run := true
 
@@ -31,6 +25,16 @@ initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
                 |""".stripMargin
 
+lazy val rootProject = project
+  .in(file("."))
+  .settings(name := "$name$", organization := "$organization$", version := "$service_version$", scalaVersion := "$scala_version$")
+
+lazy val docs = project
+  .in(file("mdoc-docs"))
+  .settings(mdocVariables := Map("VERSION" -> (version in rootProject).value))
+  .dependsOn(rootProject)
+  .enablePlugins(MdocPlugin)
+
 coverageHighlighting := true
 
 coverageMinimum := 70
@@ -45,11 +49,12 @@ scalafmtOnCompile := true
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
-addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.2")
-// addCompilerPlugin(("io.tryp"         % "splain"              % "0.3.4").cross(CrossVersion.patch))
+addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
+addCompilerPlugin("io.tryp"          % "splain"              % "0.3.5" cross CrossVersion.patch)
+addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
 
 lazy val versions = new {
-  val finatra        = "18.11.0"
+  val finatra        = "18.12.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -59,18 +64,20 @@ lazy val versions = new {
   val scalaUri       = "1.3.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.11.0"
-  val wireMock       = "2.19.0"
-  val catbird        = "18.11.0"
+  val swaggerFinatra = "18.12.0"
+  val wireMock       = "2.20.0"
+  val catbird        = "18.12.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.0.4"
-  val mouse          = "0.19"
+  val mouse          = "0.20"
+  val monix          = "3.0.0-fbcb270"
 }
 
 libraryDependencies ++= Seq(
   "com.jakehschwartz"            %% "finatra-swagger"                 % versions.swaggerFinatra,
   "org.typelevel"                %% "mouse"                           % versions.mouse,
   "com.outr"                     %% "perfolation"                     % versions.perfolation,
+  "io.monix"                     %% "monix-execution"                 % versions.monix,
   "com.github.mehmetakiftutuncu" %% "errors"                          % versions.scalaErrors,
   "io.catbird"                   %% "catbird-finagle"                 % versions.catbird,
   "io.catbird"                   %% "catbird-effect"                  % versions.catbird,
@@ -170,14 +177,18 @@ scalacOptions ++= Seq(
     "-P:socco:out:./target/socco",
     "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
     "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
-    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/"
-    // "-P:splain:all:true"
+    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/",
+    "-P:splain:all:true"
 )
+
+testReportFormats := Set(WhiteSpaceDelimited, THtml, Json)
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
 bashScriptExtraDefines ++= Seq("""addJava "-server"""",
                                """addJava "-Dnetworkaddress.cache.ttl=60"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
+                               """addJava "-XX:+EnableJVMCI"""",
+                               """addJava "-XX:+UseJVMCICompiler"""",
                                """addJava "-XX:+UseCGroupMemoryLimitForHeap"""",
                                """addJava "-XX:+UseG1GC"""",
                                """addJava "-XX:+UseStringDeduplication"""")
@@ -192,7 +203,7 @@ dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage := "findepi/graalvm:1.0.0-rc9"
+dockerBaseImage := "findepi/graalvm:1.0.0-rc10"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
