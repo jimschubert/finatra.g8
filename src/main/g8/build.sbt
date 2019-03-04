@@ -11,8 +11,6 @@ fork in run := true
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-resolvers += "maven.twttr.com" at "https://maven.twttr.com"
-
 enablePlugins(JavaAppPackaging,
               DockerPlugin,
               GitVersioning,
@@ -50,25 +48,25 @@ autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
-addCompilerPlugin("io.tryp"          % "splain"              % "0.3.5" cross CrossVersion.patch)
+addCompilerPlugin("io.tryp"          % "splain"              % "0.4.0" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
 
 lazy val versions = new {
-  val finatra        = "18.12.0"
+  val finatra        = "19.2.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
-  val scalatest      = "3.0.5"
+  val scalatest      = "3.0.6"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.8"
-  val scalaUri       = "1.3.1"
+  val scalaUri       = "1.4.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "18.12.0"
-  val wireMock       = "2.20.0"
-  val catbird        = "18.12.0"
+  val wireMock       = "2.21.0"
+  val catbird        = "19.2.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.0.4"
+  val perfolation    = "1.1.0"
   val mouse          = "0.20"
   val monix          = "3.0.0-fbcb270"
 }
