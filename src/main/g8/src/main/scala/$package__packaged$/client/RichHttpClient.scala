@@ -2,7 +2,7 @@ package $package$.client
 
 import com.twitter.finagle.{Http, Service}
 import com.twitter.finagle.http.{Request, Response}
-import com.twitter.conversions.time._
+import com.twitter.conversions.DurationOps._
 import $package$.util.AppConfigLib._
 import $package$.util.PipeOperator._
 
@@ -16,8 +16,8 @@ object RichHttpClient {
   def newClientService(dest: String): Service[Request, Response] =
     Http.client.withSession
       .maxLifeTime(20.seconds)
-      .withSession
-      .maxIdleTime(10.seconds)
+      .withSessionPool
+      .ttl(10.seconds)
       .|>(c => (!shouldEnableFastFail).fold(c.withSessionQualifier.noFailFast, c))
       .newService(dest)
 
@@ -26,8 +26,8 @@ object RichHttpClient {
 
     Http.client.withSession
       .maxLifeTime(20.seconds)
-      .withSession
-      .maxIdleTime(10.seconds)
+      .withSessionPool
+      .ttl(10.seconds)
       .|>(c => (!shouldEnableFastFail).fold(c.withSessionQualifier.noFailFast, c))
       .|>(c => shouldValidate.fold(c.withTls(sslHostname), c.withTlsWithoutValidation))
       .newService(dest)

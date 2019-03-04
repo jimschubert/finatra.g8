@@ -6,7 +6,7 @@ import AppConfigLib._
 trait AdaptableLogging extends Logging {
   private[this] val logLevel = getConfig[String]("LOG_LEVEL").map(_.toLowerCase)
 
-  def log(msg: => Any, t: Option[Throwable] = None): Unit = {
+  def log(t: Option[Throwable] = None, msg: => Any): Unit = {
     (logLevel, t) match {
       case (Some("info"), None)      => info(msg)
       case (Some("debug"), None)     => debug(msg)

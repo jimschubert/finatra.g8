@@ -8,11 +8,11 @@ object PipeOperator extends Logging {
 
     // Additional suggestions:
     def $"$$"$[U](f: T => U): T = {
-      f(v); v
+      f(v).|>(_ => v)
     }
 
     def #!(str: String = ""): T = {
-      debug(s"$"$"$str:$"$"$v"); v
+      debug(s"$"$"$str:$"$"$v").|>(_ => v)
     }
   }
 }
