@@ -52,21 +52,21 @@ addCompilerPlugin("io.tryp"          % "splain"              % "0.4.0" cross Cro
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
 
 lazy val versions = new {
-  val finatra        = "19.2.0"
+  val finatra        = "19.3.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
-  val scalatest      = "3.0.6"
+  val scalatest      = "3.0.7"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.8"
-  val scalaUri       = "1.4.1"
+  val scalaUri       = "1.4.3"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "18.12.0"
-  val wireMock       = "2.21.0"
-  val catbird        = "19.2.0"
+  val swaggerFinatra = "19.3.0"
+  val wireMock       = "2.22.0"
+  val catbird        = "19.3.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.1.0"
+  val perfolation    = "1.1.1"
   val mouse          = "0.20"
   val monix          = "3.0.0-fbcb270"
 }
@@ -172,10 +172,11 @@ scalacOptions ++= Seq(
     "-P:bm4:no-filtering:y",
     "-P:bm4:no-map-id:y",
     "-P:bm4:no-tupling:y",
+    "-P:bm4:implicit-patterns:y",
     "-P:socco:out:./target/socco",
     "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
     "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
-    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.2/api/",
+    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.12/api/",
     "-P:splain:all:true"
 )
 
@@ -201,7 +202,7 @@ dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage := "findepi/graalvm:1.0.0-rc10"
+dockerBaseImage := "findepi/graalvm:1.0.0-rc14"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
