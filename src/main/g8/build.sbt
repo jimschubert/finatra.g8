@@ -50,6 +50,7 @@ addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
 addCompilerPlugin("io.tryp"          % "splain"              % "0.4.0" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
+addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.5" cross CrossVersion.full)
 
 lazy val versions = new {
   val finatra        = "19.3.0"
@@ -59,19 +60,21 @@ lazy val versions = new {
   val scalatest      = "3.0.7"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.8"
-  val scalaUri       = "1.4.3"
+  val scalaUri       = "1.4.4"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "19.3.0"
+  val swaggerFinatra = "19.3.1"
   val wireMock       = "2.22.0"
   val catbird        = "19.3.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.1"
   val mouse          = "0.20"
   val monix          = "3.0.0-fbcb270"
+  val newtype        = "0.4.2"
 }
 
 libraryDependencies ++= Seq(
+  "io.estatico"                  %% "newtype"                         % versions.newtype,
   "com.jakehschwartz"            %% "finatra-swagger"                 % versions.swaggerFinatra,
   "org.typelevel"                %% "mouse"                           % versions.mouse,
   "com.outr"                     %% "perfolation"                     % versions.perfolation,
@@ -148,6 +151,7 @@ scalacOptions ++= Seq(
     "-Xlint:unsound-match", // Pattern match may not be typesafe.
     "-Yno-adapted-args", // Do not adapt an argument list (either by inserting () or creating a tuple) to match the receiver.
     "-Ypartial-unification", // Enable partial unification in type constructor inference
+    "-Yrangepos",
     "-Ywarn-dead-code", // Warn when dead code is identified.
     "-Ywarn-extra-implicit", // Warn when more than one implicit parameter section is defined.
     "-Ywarn-inaccessible", // Warn about inaccessible types in method signatures.
@@ -202,7 +206,7 @@ dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage := "findepi/graalvm:1.0.0-rc14"
+dockerBaseImage := "findepi/graalvm:1.0.0-rc15"
 version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
