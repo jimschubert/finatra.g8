@@ -5,6 +5,7 @@ import $package$.controllers.AdminController
 import $package$.controllers.MainController
 import $package$.filters.CommonFilters
 import $package$.util.AppConfigLib._
+import $package$.util.PipeOperator._
 import com.jakehschwartz.finatra.swagger.DocsController
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finatra.http.HttpServer
@@ -35,5 +36,6 @@ class Server extends HttpServer {
       .add[DocsController]
       .add[AdminController]
       .add[MainController]
+      .|>(_ => ())
   }
 }
