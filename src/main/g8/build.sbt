@@ -5,6 +5,7 @@ import com.typesafe.sbt.packager.docker.DockerPlugin.autoImport.DockerAlias
 import com.typesafe.sbt.SbtLicenseReport.autoImport._
 import org.programmiersportgruppe.sbt.testreporter.TabularTestReporterPlugin.autoImport.{Html => THtml, _}
 
+import scala.language.implicitConversions
 import scala.language.postfixOps
 
 fork in run := true
@@ -46,7 +47,7 @@ scalafmtOnCompile := true
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
-addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0-M4")
+addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
 addCompilerPlugin("io.tryp"          % "splain"              % "0.4.0" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
@@ -60,11 +61,11 @@ lazy val versions = new {
   val scalatest      = "3.0.7"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.8"
-  val scalaUri       = "1.4.4"
+  val scalaUri       = "1.4.5"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
   val swaggerFinatra = "19.3.1"
-  val wireMock       = "2.22.0"
+  val wireMock       = "2.23.2"
   val catbird        = "19.3.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.1"
