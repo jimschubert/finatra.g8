@@ -1,6 +1,5 @@
 package $package$.problem
 
-import cats.syntax.option._
 import io.lemonlabs.uri.Uri
 import org.scalatest.{FunSuite, Matchers}
 import ProblemResponse._
@@ -25,8 +24,8 @@ class ProblemResponseSpec extends FunSuite with Matchers {
         Uri.parse("http://localhost:8080/errors.html"),
         Title("Resource Not Found"),
         NotFound,
-        ErrorsDetail(Errors(SimpleError.notFound)).some,
-        SampleExtension(TraceId("tc-2846673"), AccountId("ac-42567833")).some
+        ErrorsDetail(Errors(SimpleError.notFound)),
+        SampleExtension(TraceId("tc-2846673"), AccountId("ac-42567833"))
       )
     )
 
@@ -35,30 +34,37 @@ class ProblemResponseSpec extends FunSuite with Matchers {
     resp.contentString shouldBe """{"type":"http://localhost:8080/errors.html","title":"Resource Not Found","status":404,"detail":[{"name":"notFound"}],"extension":{"traceId":"tc-2846673","accountId":"ac-42567833"}}"""
 
     val anotherResp: Response = ProblemResponse(
-      Problem[Errors, SampleExtension](
+      NoExtensionProblem[Errors](
         Uri.parse("http://localhost:8080/errors.html"),
         Title("Failed Dependency"),
-        FailedDependency
+        FailedDependency,
+        ErrorsDetail(Errors(SimpleError.database))
       )
     )
 
     anotherResp.contentType shouldBe Some("application/problem+json")
     anotherResp.status shouldBe FailedDependency
-    anotherResp.contentString shouldBe """{"type":"http://localhost:8080/errors.html","title":"Failed Dependency","status":424}"""
+    anotherResp.contentString shouldBe """{"type":"http://localhost:8080/errors.html","title":"Failed Dependency","status":424,"detail":[{"name":"database"}]}"""
 
     val lastResp: Response =
-      ProblemResponse(Problem[Errors, SampleExtension](title = Title("Failed Dependency"), status = FailedDependency))
+      ProblemResponse(
+        NoExtensionProblem[Errors](
+          title = Title("Failed Dependency"),
+          status = FailedDependency,
+          detail = ErrorsDetail(Errors(SimpleError.database))
+        )
+      )
 
     lastResp.contentType shouldBe Some("application/problem+json")
     lastResp.status shouldBe FailedDependency
-    lastResp.contentString shouldBe """{"type":"about:blank","title":"Failed Dependency","status":424}"""
+    lastResp.contentString shouldBe """{"type":"about:blank","title":"Failed Dependency","status":424,"detail":[{"name":"database"}]}"""
 
     val t1Resp: Response = ProblemResponse(
-      Problem[Throwable, SampleExtension](
+      NoExtensionProblem[Throwable](
         Uri.parse("http://localhost:8080/errors.html"),
         Title("Resource Not Found"),
         NotFound,
-        ThrowableDetail(new Error("Required image not found!")).some
+        ThrowableDetail(new Error("Required image not found!"))
       )
     )
 

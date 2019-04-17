@@ -28,11 +28,15 @@ lazy val rootProject = project
   .in(file("."))
   .settings(name := "$name$", organization := "$organization$", version := "$service_version$", scalaVersion := "$scala_version$")
 
-lazy val docs = project
-  .in(file("mdoc-docs"))
-  .settings(mdocVariables := Map("VERSION" -> (version in rootProject).value))
-  .dependsOn(rootProject)
-  .enablePlugins(MdocPlugin)
+  lazy val docs = project
+    .in(file("mdoc-docs"))
+    .settings(
+      mdocVariables := Map("VERSION" -> (version in rootProject).value),
+      mdocIn := file("./mdoc-docs"),
+      mdocOut := file("./target/mdoc")
+    )
+    .dependsOn(rootProject)
+    .enablePlugins(MdocPlugin)
 
 coverageHighlighting := true
 
