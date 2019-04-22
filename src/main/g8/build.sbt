@@ -58,7 +58,7 @@ addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross Cro
 addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.5" cross CrossVersion.full)
 
 lazy val versions = new {
-  val finatra        = "19.3.0"
+  val finatra        = "19.4.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -68,9 +68,9 @@ lazy val versions = new {
   val scalaUri       = "1.4.5"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "19.3.1"
+  val swaggerFinatra = "19.4.0"
   val wireMock       = "2.23.2"
-  val catbird        = "19.3.0"
+  val catbird        = "19.4.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.1"
   val mouse          = "0.20"
