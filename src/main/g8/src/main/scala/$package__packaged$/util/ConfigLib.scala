@@ -40,9 +40,9 @@ class UriDataConverter extends DataConverter[Url] {
 }
 
 object DataConverter {
-  implicit val intConverter                     = new IntDataConverter()
-  implicit val strConverter                     = new StringDataConverter()
-  implicit val boolConverter                    = new BooleanDataConverter()
-  implicit val uriConverter                     = new UriDataConverter()
-  implicit val longConverter: LongDataConverter = new LongDataConverter()
+  implicit val intConverter: IntDataConverter      = new IntDataConverter()
+  implicit val strConverter: StringDataConverter   = new StringDataConverter()
+  implicit val boolConverter: BooleanDataConverter = new BooleanDataConverter()
+  implicit val uriConverter: UriDataConverter      = new UriDataConverter()
+  implicit val longConverter: LongDataConverter    = new LongDataConverter()
 }
