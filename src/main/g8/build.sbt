@@ -227,15 +227,30 @@ dockerBuildOptions := Seq(
   "--no-cache",
   "--pull"
 )
-dockerCommands := dockerCommands.value.take(1) ++ Seq(
-  Cmd("LABEL", s"version=$"$"${version.value}"),
-  Cmd("LABEL", "owner_team=$owner_team$"),
-  Cmd("LABEL", s"""build_id=$"$"${Option(System.getProperty("build_id")).getOrElse("NA")}"""),
-  Cmd(
-    "ENV",
-    "DOCKER_CONTENT_TRUST=1",
-    "SERVICE_NAME=$docker_package_name$ SERVICE_TAGS=$service_tags$")
-) ++ dockerCommands.value.drop(1)
+
+dockerLabels := Map("version" -> version.value,
+                    "owner_team" -> "$owner_team$",
+                    "build_id" -> Option(System.getProperty("build_id")).getOrElse("NA"),
+                    "base_image" -> dockerBaseImage.value
+                   )
+
+dockerEnvVars := Map("SERVICE_NAME" -> "$docker_package_name$",
+                     "SERVICE_TAGS" -> "$service_tags$",
+                     "DOCKER_CONTENT_TRUST" -> "1"
+                     )
+
+// This is to apply OS security updates
+lazy val serviceUserGroup = Def.setting(
+  (daemonUserUid in Docker).value.getOrElse((daemonUser in Docker).value) 
+  ++ ":" ++ (daemonGroupGid in Docker).value.getOrElse((daemonGroup in Docker).value))
+dockerCommands := dockerCommands.value ++ Seq(
+  Cmd("USER", "root"),
+  Cmd("RUN",
+      "if test -f /etc/alpine-release; then apk upgrade --no-cache -v; apk add --no-cache bash; fi;"
+   ++ "if test -f /etc/debian_version; then apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* ; fi;"
+  ),
+  Cmd("USER", serviceUserGroup.value)
+)
 
 // AWS ECR support
 region           in Ecr := Region.getRegion(Regions.US_WEST_2)
