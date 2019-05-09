@@ -26,28 +26,33 @@ initialCommands in console := """
 
 lazy val rootProject = project
   .in(file("."))
-  .settings(name := "$name$", organization := "$organization$", version := "$service_version$", scalaVersion := "$scala_version$")
+  .settings(name := "$name$",
+    organization := "$organization$",
+    version      := "$service_version$",
+    scalaVersion := "$scala_version$")
 
   lazy val docs = project
     .in(file("mdoc-docs"))
     .settings(
       mdocVariables := Map("VERSION" -> (version in rootProject).value),
-      mdocIn := file("./mdoc-docs"),
-      mdocOut := file("./target/mdoc")
+      mdocIn        := file("./mdoc-docs"),
+      mdocOut       := file("./target/mdoc")
     )
     .dependsOn(rootProject)
     .enablePlugins(MdocPlugin)
 
 coverageHighlighting := true
 
-coverageMinimum := 70
-coverageFailOnMinimum := true
+coverageMinimum          := 70
+coverageFailOnMinimum    := true
 coverageExcludedPackages := ".*sse*.;.*util*.;.*client*."
 
 scapegoatVersion in ThisBuild := "1.3.8"
 
-scalafmtConfig := file(".scalafmt.conf")
+scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
+
+mappings in (Compile, packageDoc) := Seq()
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
@@ -55,7 +60,7 @@ addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
 addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
-addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.5" cross CrossVersion.full)
+addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.9" cross CrossVersion.full)
 
 lazy val versions = new {
   val finatra        = "19.4.0"
@@ -73,7 +78,7 @@ lazy val versions = new {
   val catbird        = "19.4.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.1"
-  val mouse          = "0.20"
+  val mouse          = "0.21"
   val monix          = "3.0.0-fbcb270"
   val newtype        = "0.4.2"
 }
@@ -207,18 +212,15 @@ bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
 val gitHeadCode = SettingKey[String]("git-head-hash", "The commit hash code of HEAD")
 gitHeadCode := git.gitHeadCommit.value.map { sha => s"$"$"${sha.take(7)}" }.getOrElse("na")
 
-dockerVersion := Some(DockerVersion(17, 9, 1, Some("ce")))
+dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
-packageName in Docker := "vr/$docker_package_name$"
+packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage := "findepi/graalvm:1.0.0-rc15"
-version in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
-maintainer in Docker := "$maintainer_name$ <$maintainer_email$>"
+dockerBaseImage    := "findepi/graalvm:1.0.0-rc16"
+version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
+maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
-dockerAlias := DockerAlias(None,
-                           None,
-                           (packageName in Docker).value,
-                           Some((version in Docker).value))
+dockerAlias        := DockerAlias(None, None, (packageName in Docker).value, Some((version in Docker).value))
 dockerUpdateLatest := false
 dockerBuildOptions := Seq(
   "--force-rm",
@@ -228,25 +230,24 @@ dockerBuildOptions := Seq(
   "--pull"
 )
 
-dockerLabels := Map("version" -> version.value,
-                    "owner_team" -> "$owner_team$",
-                    "build_id" -> Option(System.getProperty("build_id")).getOrElse("NA"),
-                    "base_image" -> dockerBaseImage.value
-                   )
+dockerLabels := Map(
+  "version"    -> version.value,
+  "owner_team" -> "$owner_team$",
+  "build_id"   -> Option(System.getProperty("build_id")).getOrElse("NA"),
+  "base_image" -> dockerBaseImage.value
+)
 
-dockerEnvVars := Map("SERVICE_NAME" -> "$docker_package_name$",
-                     "SERVICE_TAGS" -> "$service_tags$"
-                     )
+dockerEnvVars := Map("SERVICE_NAME" -> "$docker_package_name$", "SERVICE_TAGS" -> "$service_tags$")
 
 // This is to apply OS security updates
-lazy val serviceUserGroup = Def.setting(
-  (daemonUserUid in Docker).value.getOrElse((daemonUser in Docker).value) 
-  ++ ":" ++ (daemonGroupGid in Docker).value.getOrElse((daemonGroup in Docker).value))
+lazy val serviceUserGroup = Def.setting(s"$"$"${(daemonUserUid in Docker).value.getOrElse((daemonUser in Docker).value)}:$"$"${(daemonGroupGid in Docker).value.getOrElse((daemonGroup in Docker).value)}")
+
 dockerCommands := dockerCommands.value ++ Seq(
   Cmd("USER", "root"),
-  Cmd("RUN",
-      "if test -f /etc/alpine-release; then apk upgrade --no-cache -v; apk add --no-cache bash; fi;"
-   ++ "if test -f /etc/debian_version; then apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* ; fi;"
+  Cmd(
+    "RUN",
+    "if test -f /etc/alpine-release; then apk upgrade --no-cache -v; apk add --no-cache bash; fi;",
+    "if test -f /etc/debian_version; then apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* ; fi;"
   ),
   Cmd("USER", serviceUserGroup.value)
 )
@@ -256,17 +257,17 @@ region           in Ecr := Region.getRegion(Regions.US_WEST_2)
 repositoryName   in Ecr := (packageName in Docker).value
 localDockerImage in Ecr := (packageName in Docker).value + ":" + (version in Docker).value
 repositoryTags   in Ecr := Seq((version in Docker).value)
-push in Ecr := ((push in Ecr) dependsOn (publishLocal in Docker, createRepository in Ecr, login in Ecr)).value
-publish in Docker := (push in Ecr).value
+push             in Ecr  := ((push in Ecr) dependsOn (publishLocal in Docker, createRepository in Ecr, login in Ecr)).value
+publish          in Docker := (push in Ecr).value
 
 // MicroSites
-micrositeName := "$name$"
-micrositeBaseUrl := "$microsite_base_url$"
-micrositeDocumentationUrl := "/$microsite_base_url$/docs"
-micrositeAuthor := "$maintainer_name$"
+micrositeName                 := "$name$"
+micrositeBaseUrl              := "$microsite_base_url$"
+micrositeDocumentationUrl     := "/$microsite_base_url$/docs"
+micrositeAuthor               := "$maintainer_name$"
 micrositeOrganizationHomepage := "http://www.htc.com"
-micrositeGitHostingService := Other("HICHub")
-micrositeGitHostingUrl := "https://hichub.htc.com"
+micrositeGitHostingService    := Other("HICHub")
+micrositeGitHostingUrl        := "https://hichub.htc.com"
 
 // License report style
 licenseReportStyleRules := Some("table, th, td {border: 1px solid grey;}")
