@@ -235,8 +235,7 @@ dockerLabels := Map("version" -> version.value,
                    )
 
 dockerEnvVars := Map("SERVICE_NAME" -> "$docker_package_name$",
-                     "SERVICE_TAGS" -> "$service_tags$",
-                     "DOCKER_CONTENT_TRUST" -> "1"
+                     "SERVICE_TAGS" -> "$service_tags$"
                      )
 
 // This is to apply OS security updates
