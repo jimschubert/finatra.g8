@@ -46,14 +46,14 @@ coverageExcludedPackages := ".*sse*.;.*util*.;.*client*."
 
 scapegoatVersion in ThisBuild := "1.3.8"
 
-scalafmtConfig := Some(file(".scalafmt.conf"))
+scalafmtConfig := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 autoCompilerPlugins := true
 addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
 addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
-addCompilerPlugin("io.tryp"          % "splain"              % "0.4.0" cross CrossVersion.patch)
+addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
 addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.5" cross CrossVersion.full)
 
