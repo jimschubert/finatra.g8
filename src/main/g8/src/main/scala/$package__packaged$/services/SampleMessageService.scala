@@ -15,7 +15,7 @@ class SampleMessageService extends RerunnableService[String, SMessage] with Logg
     }
 }
 
-sealed trait SMessage
+sealed trait SMessage extends Product with Serializable
 
 final case class GreetingsMessage(message: String) extends SMessage
 final case class FailureMessage(message: String)   extends SMessage
