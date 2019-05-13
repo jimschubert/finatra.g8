@@ -10,7 +10,7 @@ addSbtPlugin("com.typesafe.sbt"               % "sbt-git"                   % "0
 addSbtPlugin("com.softwaremill.clippy"        % "plugin-sbt"                % "0.6.1")
 addSbtPlugin("com.sksamuel.scapegoat"         %% "sbt-scapegoat"            % "1.0.9")
 addSbtPlugin("org.scoverage"                  % "sbt-scoverage"             % "1.5.1")
-addSbtPlugin("com.47deg"                      % "sbt-microsites"            % "0.9.0")
+addSbtPlugin("com.47deg"                      % "sbt-microsites"            % "0.7.16")
 addSbtPlugin("org.scalameta"                  % "sbt-scalafmt"              % "2.0.0")
 addSbtPlugin("org.duhemm"                     % "sbt-errors-summary"        % "0.6.3")
 addSbtPlugin("com.birdhowl"                   % "sbt-mfinger"               % "0.1.0")
