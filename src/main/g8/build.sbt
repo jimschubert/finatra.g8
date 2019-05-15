@@ -202,7 +202,6 @@ bashScriptExtraDefines ++= Seq("""addJava "-server"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
                                """addJava "-XX:+EnableJVMCI"""",
                                """addJava "-XX:+UseJVMCICompiler"""",
-                               """addJava "-XX:+UseCGroupMemoryLimitForHeap"""",
                                """addJava "-XX:+UseG1GC"""",
                                """addJava "-XX:+UseStringDeduplication"""")
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
