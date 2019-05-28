@@ -18,7 +18,9 @@ enablePlugins(JavaAppPackaging,
               GitBranchPrompt,
               DockerContainerPlugin,
               MicrositesPlugin,
-              EcrPlugin)
+              EcrPlugin,
+              ParadoxPlugin,
+              ParadoxMaterialThemePlugin)
 
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
@@ -29,7 +31,11 @@ lazy val rootProject = project
   .settings(name := "$name$",
     organization := "$organization$",
     version      := "$service_version$",
-    scalaVersion := "$scala_version$")
+    scalaVersion := "$scala_version$",
+    Compile      / paradoxMaterialTheme ~= {
+      _.withColor("teal", "indigo").withFont("Roboto", "Fira Code")
+    }
+  )
 
   lazy val docs = project
     .in(file("mdoc-docs"))
@@ -60,10 +66,10 @@ addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
 addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
-addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.9" cross CrossVersion.full)
+addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.11" cross CrossVersion.full)
 
 lazy val versions = new {
-  val finatra        = "19.4.0"
+  val finatra        = "19.5.1"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -73,9 +79,9 @@ lazy val versions = new {
   val scalaUri       = "1.4.5"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "19.4.0"
+  val swaggerFinatra = "19.5.1"
   val wireMock       = "2.23.2"
-  val catbird        = "19.4.0"
+  val catbird        = "19.5.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.1"
   val mouse          = "0.21"
