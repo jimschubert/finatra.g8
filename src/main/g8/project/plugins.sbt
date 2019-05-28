@@ -2,7 +2,7 @@ resolvers += Resolver.url("bintray-sbt-plugin-releases", url("http://dl.bintray.
   Resolver.ivyStylePatterns)
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("io.get-coursier"                % "sbt-coursier"              % "1.1.0-M12")
+addSbtPlugin("io.get-coursier"                % "sbt-coursier"              % "1.1.0-M13-4")
 addSbtPlugin("ch.epfl.scala"                  % "sbt-scalafix"              % "0.9.4")
 addSbtPlugin("au.com.onegeek"                 %% "sbt-dotenv"               % "2.0.117")
 addSbtPlugin("com.github.gseitz"              % "sbt-release"               % "1.0.11")
@@ -23,3 +23,5 @@ addSbtPlugin("org.scalameta"                  % "sbt-mdoc"                  % "1
 addSbtPlugin("com.github.cb372"               % "sbt-explicit-dependencies" % "0.2.9")
 addSbtPlugin("org.wartremover"                % "sbt-wartremover"           % "2.4.2")
 addSbtPlugin("com.github.sbt"                 % "sbt-cpd"                   % "2.0.0")
+addSbtPlugin("com.lightbend.paradox"          % "sbt-paradox"                % "0.5.5")
+addSbtPlugin("io.github.jonas"                % "sbt-paradox-material-theme" % "0.6.0")
