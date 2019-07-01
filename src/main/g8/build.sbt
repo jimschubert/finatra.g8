@@ -40,6 +40,7 @@ lazy val rootProject = project
   lazy val docs = project
     .in(file("mdoc-docs"))
     .settings(
+      scalaVersion  := "2.12.8",
       mdocVariables := Map("VERSION" -> (version in rootProject).value),
       mdocIn        := file("./mdoc-docs"),
       mdocOut       := file("./target/mdoc")
@@ -66,25 +67,25 @@ addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0")
 addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
 addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch)
 addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
-addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.1.11" cross CrossVersion.full)
+addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.0" cross CrossVersion.full)
 
 lazy val versions = new {
-  val finatra        = "19.5.1"
+  val finatra        = "19.6.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
-  val scalatest      = "3.0.7"
+  val scalatest      = "3.0.8"
   val junitInterface = "0.11"
-  val dockerItScala  = "0.9.8"
-  val scalaUri       = "1.4.5"
+  val dockerItScala  = "0.9.9"
+  val scalaUri       = "1.4.10"
   val hamsters       = "2.6.0"
-  val fluentdScala   = "0.2.5"
-  val swaggerFinatra = "19.5.1"
+  val fluentdScala   = "0.2.8"
+  val swaggerFinatra = "19.6.0"
   val wireMock       = "2.23.2"
-  val catbird        = "19.5.0"
+  val catbird        = "19.6.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.1.1"
-  val mouse          = "0.21"
+  val perfolation    = "1.1.4"
+  val mouse          = "0.22"
   val monix          = "3.0.0-fbcb270"
   val newtype        = "0.4.2"
 }
@@ -221,7 +222,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.0.0"
+dockerBaseImage    := "findepi/graalvm:19.0.2"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
