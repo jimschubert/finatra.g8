@@ -22,7 +22,7 @@ class StartupTest extends FeatureTest {
   test("Swagger.json should be exported") {
     val swaggerContent = server.httpGet(path = "/swagger.json", andExpect = Ok).contentString
 
-    IO(new BufferedWriter(new FileWriter(new File("swagger.json"))))
+    IO(new BufferedWriter(new FileWriter(new File("target/swagger.json"))))
       .bracket(writer => IO(writer.write(swaggerContent)))(writer => IO(writer.close))
       .unsafeRunSync()
   }
