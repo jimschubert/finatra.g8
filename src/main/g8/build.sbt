@@ -30,7 +30,7 @@ initialCommands in console := """
 lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9"),
-  addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0"),
+  addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
   addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3"),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
@@ -73,7 +73,7 @@ scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "19.6.0"
+  val finatra        = "19.7.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -83,14 +83,14 @@ lazy val versions = new {
   val scalaUri       = "1.4.10"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
-  val swaggerFinatra = "19.6.0"
+  val swaggerFinatra = "19.7.0"
   val wireMock       = "2.24.0"
   val catbird        = "19.6.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.4"
   val mouse          = "0.22"
   val monix          = "3.0.0-fbcb270"
-  val newtype        = "0.4.2"
+  val newtype        = "0.4.3"
 }
 
 libraryDependencies ++= Seq(
