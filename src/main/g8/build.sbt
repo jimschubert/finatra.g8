@@ -17,14 +17,25 @@ enablePlugins(JavaAppPackaging,
               GitVersioning,
               GitBranchPrompt,
               DockerContainerPlugin,
-              MicrositesPlugin,
               EcrPlugin,
               ParadoxPlugin,
-              ParadoxMaterialThemePlugin)
+              ParadoxMaterialThemePlugin,
+              net.virtualvoid.optimizer.SbtOptimizerPlugin
+            )
 
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
                 |""".stripMargin
+
+lazy val commonSettings = Seq(
+  autoCompilerPlugins := true,
+  addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9"),
+  addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0"),
+  addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3"),
+  addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
+  addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.0" cross CrossVersion.full)
+)
 
 lazy val rootProject = project
   .in(file("."))
@@ -34,16 +45,18 @@ lazy val rootProject = project
     scalaVersion := "$scala_version$",
     Compile      / paradoxMaterialTheme ~= {
       _.withColor("teal", "indigo").withFont("Roboto", "Fira Code")
-    }
+    },
+    commonSettings
   )
 
   lazy val docs = project
     .in(file("mdoc-docs"))
     .settings(
-      scalaVersion  := "2.12.8",
+      scalaVersion  := "$scala_version$",
       mdocVariables := Map("VERSION" -> (version in rootProject).value),
       mdocIn        := file("./mdoc-docs"),
-      mdocOut       := file("./target/mdoc")
+      mdocOut       := file("./target/mdoc"),
+      commonSettings
     )
     .dependsOn(rootProject)
     .enablePlugins(MdocPlugin)
@@ -54,20 +67,10 @@ coverageMinimum          := 70
 coverageFailOnMinimum    := true
 coverageExcludedPackages := ".*sse*.;.*util*.;.*client*."
 
-scapegoatVersion in ThisBuild := "1.3.8"
+scapegoatVersion in ThisBuild := "1.3.9"
 
 scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
-
-mappings in (Compile, packageDoc) := Seq()
-
-autoCompilerPlugins := true
-addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9")
-addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0")
-addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3")
-addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch)
-addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full)
-addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.0" cross CrossVersion.full)
 
 lazy val versions = new {
   val finatra        = "19.6.0"
@@ -81,7 +84,7 @@ lazy val versions = new {
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
   val swaggerFinatra = "19.6.0"
-  val wireMock       = "2.23.2"
+  val wireMock       = "2.24.0"
   val catbird        = "19.6.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.4"
@@ -222,7 +225,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.0.2"
+dockerBaseImage    := "findepi/graalvm:19.1.1"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
@@ -265,15 +268,6 @@ localDockerImage in Ecr := (packageName in Docker).value + ":" + (version in Doc
 repositoryTags   in Ecr := Seq((version in Docker).value)
 push             in Ecr  := ((push in Ecr) dependsOn (publishLocal in Docker, createRepository in Ecr, login in Ecr)).value
 publish          in Docker := (push in Ecr).value
-
-// MicroSites
-micrositeName                 := "$name$"
-micrositeBaseUrl              := "$microsite_base_url$"
-micrositeDocumentationUrl     := "/$microsite_base_url$/docs"
-micrositeAuthor               := "$maintainer_name$"
-micrositeOrganizationHomepage := "http://www.htc.com"
-micrositeGitHostingService    := Other("HICHub")
-micrositeGitHostingUrl        := "https://hichub.htc.com"
 
 // License report style
 licenseReportStyleRules := Some("table, th, td {border: 1px solid grey;}")
