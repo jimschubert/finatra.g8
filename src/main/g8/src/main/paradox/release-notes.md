@@ -2,10 +2,10 @@
 
 ## $service_version$
 
-### Features
+Features
 
 - `your feature here`
 
-### Fixes
+Fixes
 
 - `your fix here`
