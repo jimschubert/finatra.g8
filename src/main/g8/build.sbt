@@ -20,7 +20,8 @@ enablePlugins(JavaAppPackaging,
               EcrPlugin,
               ParadoxPlugin,
               ParadoxMaterialThemePlugin,
-              net.virtualvoid.optimizer.SbtOptimizerPlugin
+              net.virtualvoid.optimizer.SbtOptimizerPlugin,
+              SbtSoccoPlugin
             )
 
 initialCommands in console := """
@@ -29,8 +30,7 @@ initialCommands in console := """
 
 lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
-  addCompilerPlugin("com.criteo.socco" %% "socco-plugin"       % "0.1.9"),
-  addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.0"),
+  addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
   addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3"),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
@@ -73,7 +73,7 @@ scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "19.6.0"
+  val finatra        = "19.8.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -83,14 +83,14 @@ lazy val versions = new {
   val scalaUri       = "1.4.10"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
-  val swaggerFinatra = "19.6.0"
-  val wireMock       = "2.24.0"
-  val catbird        = "19.6.0"
+  val swaggerFinatra = "19.8.0"
+  val wireMock       = "2.24.1"
+  val catbird        = "19.8.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.4"
   val mouse          = "0.22"
   val monix          = "3.0.0-fbcb270"
-  val newtype        = "0.4.2"
+  val newtype        = "0.4.3"
 }
 
 libraryDependencies ++= Seq(
@@ -197,14 +197,17 @@ scalacOptions ++= Seq(
     "-P:bm4:no-map-id:y",
     "-P:bm4:no-tupling:y",
     "-P:bm4:implicit-patterns:y",
-    "-P:socco:out:./target/socco",
-    "-P:socco:package_com.twitter.util:https://twitter.github.io/util/docs/",
-    "-P:socco:package_scala:http://www.scala-lang.org/api/current/",
-    "-P:socco:package_com.htc.vr8.:file://./target/scala-2.12/api/",
     "-P:splain:all:true"
 )
 
 testReportFormats := Set(WhiteSpaceDelimited, THtml, Json)
+
+soccoOut := target.value / "socco"
+soccoPackage := List(
+  "com.twitter.util:https://twitter.github.io/util/docs/",
+  "com.htc.vr8.:file://./target/scala-2.12/api/",
+  "com.htc.vr8.:file://./target/scala-2.12/api/"
+)
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
 bashScriptExtraDefines ++= Seq("""addJava "-server"""",
@@ -225,7 +228,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.1.1"
+dockerBaseImage    := "findepi/graalvm:19.2.0"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)

@@ -1,4 +1,4 @@
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.21")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.25")
 addSbtPlugin("com.dwolla.sbt"   % "docker-containers"   % "1.2.12")
 
 // libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.3"
