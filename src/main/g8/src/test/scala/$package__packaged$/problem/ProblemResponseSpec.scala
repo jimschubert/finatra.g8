@@ -14,9 +14,10 @@ object SampleExtension {
   @newtype final case class AccountId(id: String)
 }
 
+final case class SampleExtension(traceId: TraceId, accountId: AccountId)
+
 // sbt "testOnly $package$.problem.ProblemResponseSpec"
 class ProblemResponseSpec extends FunSuite with Matchers {
-  final case class SampleExtension(traceId: TraceId, accountId: AccountId)
 
   test("Should generate proper RFC7807 error response") {
     val resp: Response = ProblemResponse(

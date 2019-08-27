@@ -34,7 +34,7 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3"),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
-  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.0" cross CrossVersion.full)
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.3" cross CrossVersion.full)
 )
 
 lazy val rootProject = project

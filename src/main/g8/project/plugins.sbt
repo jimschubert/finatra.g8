@@ -11,7 +11,7 @@ addSbtPlugin("com.typesafe.sbt"               % "sbt-git"                    % "
 addSbtPlugin("com.softwaremill.clippy"        % "plugin-sbt"                 % "0.6.1")
 addSbtPlugin("com.sksamuel.scapegoat"         %% "sbt-scapegoat"             % "1.0.9")
 addSbtPlugin("org.scoverage"                  % "sbt-scoverage"              % "1.6.0")
-addSbtPlugin("org.scalameta"                  % "sbt-scalafmt"               % "2.0.0")
+addSbtPlugin("org.scalameta"                  % "sbt-scalafmt"               % "2.0.3")
 addSbtPlugin("org.duhemm"                     % "sbt-errors-summary"         % "0.6.3")
 addSbtPlugin("com.birdhowl"                   % "sbt-mfinger"                % "0.1.0")
 addSbtPlugin("com.timushev.sbt"               % "sbt-updates"                % "0.4.2")
