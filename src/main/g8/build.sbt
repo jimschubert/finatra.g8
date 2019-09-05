@@ -31,7 +31,7 @@ initialCommands in console := """
 lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
-  addCompilerPlugin("com.github.cb372" %% "scala-typed-holes"  % "0.0.3"),
+  addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.0" cross CrossVersion.full),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
   addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.3" cross CrossVersion.full)
@@ -67,7 +67,7 @@ coverageMinimum          := 70
 coverageFailOnMinimum    := true
 coverageExcludedPackages := ".*sse*.;.*util*.;.*client*."
 
-scapegoatVersion in ThisBuild := "1.3.9"
+scapegoatVersion in ThisBuild := "1.3.10"
 
 scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
@@ -80,7 +80,7 @@ lazy val versions = new {
   val scalatest      = "3.0.8"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.9"
-  val scalaUri       = "1.4.10"
+  val scalaUri       = "1.5.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
   val swaggerFinatra = "19.8.0"
@@ -88,7 +88,7 @@ lazy val versions = new {
   val catbird        = "19.8.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.4"
-  val mouse          = "0.22"
+  val mouse          = "0.23"
   val monix          = "3.0.0-fbcb270"
   val newtype        = "0.4.3"
 }
