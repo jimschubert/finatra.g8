@@ -3,7 +3,7 @@ resolvers += Resolver.url("bintray-sbt-plugin-releases", url("http://dl.bintray.
 )
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("io.get-coursier"                % "sbt-coursier"               % "2.0.0-RC3-2")
+addSbtPlugin("io.get-coursier"                % "sbt-coursier"               % "2.0.0-RC3-3")
 addSbtPlugin("ch.epfl.scala"                  % "sbt-scalafix"               % "0.9.6")
 addSbtPlugin("au.com.onegeek"                 %% "sbt-dotenv"                % "2.0.117")
 addSbtPlugin("com.github.gseitz"              % "sbt-release"                % "1.0.11")
@@ -11,7 +11,7 @@ addSbtPlugin("com.typesafe.sbt"               % "sbt-git"                    % "
 addSbtPlugin("com.softwaremill.clippy"        % "plugin-sbt"                 % "0.6.1")
 addSbtPlugin("com.sksamuel.scapegoat"         %% "sbt-scapegoat"             % "1.0.9")
 addSbtPlugin("org.scoverage"                  % "sbt-scoverage"              % "1.6.0")
-addSbtPlugin("org.scalameta"                  % "sbt-scalafmt"               % "2.0.3")
+addSbtPlugin("org.scalameta"                  % "sbt-scalafmt"               % "2.0.")
 addSbtPlugin("org.duhemm"                     % "sbt-errors-summary"         % "0.6.3")
 addSbtPlugin("com.birdhowl"                   % "sbt-mfinger"                % "0.1.0")
 addSbtPlugin("com.timushev.sbt"               % "sbt-updates"                % "0.4.2")
