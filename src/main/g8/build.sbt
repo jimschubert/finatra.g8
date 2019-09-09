@@ -89,7 +89,7 @@ lazy val versions = new {
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.4"
   val mouse          = "0.23"
-  val monix          = "3.0.0-fbcb270"
+  val monix          = "3.0.0-RC5"
   val newtype        = "0.4.3"
 }
 
@@ -192,7 +192,7 @@ scalacOptions ++= Seq(
     "-Ybackend-parallelism",
     s"$"$"${sys.runtime.availableProcessors() * 2}",
     "-Ybackend-worker-queue",
-    "8",
+    "1000",
     "-P:bm4:no-filtering:y",
     "-P:bm4:no-map-id:y",
     "-P:bm4:no-tupling:y",
@@ -205,7 +205,6 @@ testReportFormats := Set(WhiteSpaceDelimited, THtml, Json)
 soccoOut := target.value / "socco"
 soccoPackage := List(
   "com.twitter.util:https://twitter.github.io/util/docs/",
-  "com.htc.vr8.:file://./target/scala-2.12/api/",
   "com.htc.vr8.:file://./target/scala-2.12/api/"
 )
 
