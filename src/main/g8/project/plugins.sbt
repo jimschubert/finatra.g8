@@ -3,7 +3,7 @@ resolvers += Resolver.url("bintray-sbt-plugin-releases", url("http://dl.bintray.
 )
 resolvers += Classpaths.sbtPluginReleases
 
-addSbtPlugin("io.get-coursier"                % "sbt-coursier"               % "2.0.0-RC3-3")
+// addSbtPlugin("io.get-coursier"                % "sbt-coursier"               % "2.0.0-RC3-3")
 addSbtPlugin("ch.epfl.scala"                  % "sbt-scalafix"               % "0.9.6")
 addSbtPlugin("au.com.onegeek"                 %% "sbt-dotenv"                % "2.0.117")
 addSbtPlugin("com.github.gseitz"              % "sbt-release"                % "1.0.11")
