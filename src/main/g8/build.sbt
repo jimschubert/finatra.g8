@@ -12,18 +12,6 @@ fork in run := true
 
 resolvers += Resolver.sonatypeRepo("releases")
 
-enablePlugins(JavaAppPackaging,
-              DockerPlugin,
-              GitVersioning,
-              GitBranchPrompt,
-              DockerContainerPlugin,
-              EcrPlugin,
-              ParadoxPlugin,
-              ParadoxMaterialThemePlugin,
-              net.virtualvoid.optimizer.SbtOptimizerPlugin,
-              SbtSoccoPlugin
-            )
-
 initialCommands in console := """
                 | import com.twitter.util.{Future, FuturePool, Await}
                 |""".stripMargin
@@ -47,6 +35,17 @@ lazy val rootProject = project
       _.withColor("teal", "indigo").withFont("Roboto", "Fira Code")
     },
     commonSettings
+  ).enablePlugins(
+    JavaAppPackaging,
+    DockerPlugin,
+    GitVersioning,
+    GitBranchPrompt,
+    DockerContainerPlugin,
+    EcrPlugin,
+    ParadoxPlugin,
+    ParadoxMaterialThemePlugin,
+    net.virtualvoid.optimizer.SbtOptimizerPlugin,
+    SbtSoccoPlugin
   )
 
   lazy val docs = project
@@ -89,7 +88,7 @@ lazy val versions = new {
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.4"
   val mouse          = "0.23"
-  val monix          = "3.0.0-RC5"
+  val monix          = "3.0.0"
   val newtype        = "0.4.3"
 }
 
