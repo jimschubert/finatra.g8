@@ -22,8 +22,8 @@ All you need to do is to define your extension type, for example:
 
 ```
 object SampleExtension {
-  final case class TraceId(id: String)
-  final case class AccountId(id: String)
+  final case class TraceId(id: String)   extends AnyVal
+  final case class AccountId(id: String) extends AnyVal
 }
 
 final case class SampleExtension(traceId: TraceId, accountId: AccountId)
@@ -92,7 +92,7 @@ val noExtRespContent: String = noExtProblemResp.contentString
 
 ### Problem detail
 
-Two problem detail types are provided for regular use. However, we understand you need flexibility as well.
+Two problem detail types are provided. However, we understand you need flexibility as well.
 Therefore, a `Detail[T]` is defined, you can have your own T design to suit your need.
 Usually, this T type represents your own error type. Thus we give you two pre-defined Detail types: `ThrowableDetail` and `ErrorsDetail`.
 

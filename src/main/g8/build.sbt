@@ -19,7 +19,7 @@ initialCommands in console := """
 lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
-  addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.0" cross CrossVersion.full),
+  addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.1" cross CrossVersion.full),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
   addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.3" cross CrossVersion.full)
@@ -34,6 +34,7 @@ lazy val rootProject = project
     Compile      / paradoxMaterialTheme ~= {
       _.withColor("teal", "indigo").withFont("Roboto", "Fira Code")
     },
+    publishArtifact in (Compile, packageDoc) in ThisBuild := false,
     commonSettings
   ).enablePlugins(
     JavaAppPackaging,
@@ -72,7 +73,7 @@ scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "19.8.0"
+  val finatra        = "19.10.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -82,17 +83,22 @@ lazy val versions = new {
   val scalaUri       = "1.5.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
-  val swaggerFinatra = "19.8.0"
-  val wireMock       = "2.24.1"
-  val catbird        = "19.8.0"
+  val swaggerFinatra = "19.9.0"
+  val wireMock       = "2.25.1"
+  val catbird        = "19.10.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.1.4"
+  val perfolation    = "1.1.5"
   val mouse          = "0.23"
   val monix          = "3.0.0"
   val newtype        = "0.4.3"
+  val catsRetry      = "0.3.1"
+  val log4cats       = "1.0.1"
+  val enumeratum     = "1.5.13"
 }
 
 libraryDependencies ++= Seq(
+  "com.beachape"                 %% "enumeratum"                      % versions.enumeratum,
+  "io.chrisdavenport"            %% "log4cats-slf4j"                  % versions.log4cats,
   "io.estatico"                  %% "newtype"                         % versions.newtype,
   "com.jakehschwartz"            %% "finatra-swagger"                 % versions.swaggerFinatra,
   "org.typelevel"                %% "mouse"                           % versions.mouse,
@@ -128,7 +134,10 @@ libraryDependencies ++= Seq(
   "com.novocode"                 % "junit-interface"                  % versions.junitInterface % "test",
   "com.whisk"                    %% "docker-testkit-scalatest"        % versions.dockerItScala  % "test",
   "com.whisk"                    %% "docker-testkit-impl-docker-java" % versions.dockerItScala  % "test"
-)
+) ++ Seq(
+  "com.github.cb372" %% "cats-retry-core",
+  "com.github.cb372" %% "cats-retry-cats-effect"
+).map(_ % versions.catsRetry)
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
 
@@ -226,7 +235,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.2.0"
+dockerBaseImage    := "findepi/graalvm:19.2.1"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
