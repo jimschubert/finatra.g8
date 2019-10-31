@@ -17,6 +17,6 @@ trait OpLogger {
 
   def logWithError[F[_]: Sync, E, D](l: WithErrorOperationLog[E, D])(implicit ds: Show[D], es: Show[E]): F[String] =
     l.toJsonString.|> { s =>
-      Logger[F].info(s) *> Sync[F].delay(s)
+      Logger[F].error(s) *> Sync[F].delay(s)
     }
 }

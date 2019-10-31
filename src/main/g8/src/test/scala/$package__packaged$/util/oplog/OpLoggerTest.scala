@@ -44,19 +44,7 @@ class OpLoggerTest extends IntegrationTest {
     }
 
     SampleApp.writeLog(sampleNoErrorLog) shouldBe
-      p"""
-         |{
-         |  "team": "architect",
-         |  "service": "Sample Service",
-         |  "timestamp": $"$"$now,
-         |  "traceId": "null",
-         |  "msgLevel": "P0",
-         |  "data": { "accountId": "45909f22-f6fe-11e9-a3f5-784f436a2b87",
-         |     "txId": "70915c16-f6fe-11e9-9598-784f436a2b87",
-         |     "response": "login succeeded"
-         | }
-         |}
-         |""".stripMargin
+      p"""{"team":"architect","service":"Sample Service","timestamp":$"$"$now,"traceId":"null","msgLevel":"P0","data":{"accountId":"45909f22-f6fe-11e9-a3f5-784f436a2b87","txId":"70915c16-f6fe-11e9-9598-784f436a2b87","response":"login succeeded"}}""".stripMargin
 
     val sampleWithErrorLog = WithErrorOperationLog[Throwable, SampleData](
       team      = Team("architect"),
@@ -79,22 +67,6 @@ class OpLoggerTest extends IntegrationTest {
     }
 
     SampleErrorApp.writeErrorLog(sampleWithErrorLog) shouldBe
-      p"""
-         |{
-         |  "team": "architect",
-         |  "service": "Sample Service",
-         |  "timestamp": $"$"$now,
-         |  "traceId": "null",
-         |  "msgLevel": "P0",
-         |  "data": { "accountId": "45909f22-f6fe-11e9-a3f5-784f436a2b87",
-         |     "txId": "70915c16-f6fe-11e9-9598-784f436a2b87",
-         |     "response": "login failed"
-         | },
-         |  "error": {
-         |     "exception": "java.lang.RuntimeException",
-         |     "msg": "User login failed!"
-         |   }
-         |}
-         |""".stripMargin
+      p"""{"team":"architect","service":"Sample Service","timestamp":$"$"$now,"traceId":"null","msgLevel":"P0","data":{"accountId":"45909f22-f6fe-11e9-a3f5-784f436a2b87","txId":"70915c16-f6fe-11e9-9598-784f436a2b87","response":"login failed"},"error":{"exception":"java.lang.RuntimeException","msg":"User login failed!"}}""".stripMargin
   }
 }
