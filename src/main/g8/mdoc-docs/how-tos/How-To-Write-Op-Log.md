@@ -71,7 +71,7 @@ implicit val sdShow: Show[SampleData] =
 
 object SampleApp extends OpLogger {
   def writeLog(d: NoErrorOperationLog[SampleData]): String =
-    (IO.delay("Op Log ==> ") *> logWithNoError[IO, SampleData](d)).unsafeRunSync
+    (IO.delay(println("Op Log ==> ")) *> logWithNoError[IO, SampleData](d)).unsafeRunSync
 }
 
 println(SampleApp.writeLog(sampleNoErrorLog))
@@ -107,7 +107,7 @@ val sampleWithErrorLog = WithErrorOperationLog[Throwable, SampleData](
 
 object SampleErrorApp extends OpLogger {
   def writeErrorLog(d: WithErrorOperationLog[Throwable, SampleData]): String =
-    (IO.delay("Error op log ==> ") *> logWithError[IO, Throwable, SampleData](d)).unsafeRunSync
+    (IO.delay(println("Error op log ==> ")) *> logWithError[IO, Throwable, SampleData](d)).unsafeRunSync
 }
 
 println(SampleErrorApp.writeErrorLog(sampleWithErrorLog))

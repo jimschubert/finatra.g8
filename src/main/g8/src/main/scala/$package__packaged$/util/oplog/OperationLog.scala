@@ -1,9 +1,10 @@
 package $package$.util.oplog
 
 import cats.Show
-import $package$.util.oplog.OperationLog._
+import $package$.util.oplog.OperationLog.{Error => OpError, _}
 import com.twitter.util.Time
 import enumeratum._
+import io.circe.parser._
 import mouse.option._
 import org.slf4j.MDC
 import perfolation._
@@ -22,26 +23,28 @@ final case class NoErrorOperationLog[D](
 
   def toJsonString(implicit ds: Show[D]): String =
     traceId.cata(
-      tId => p"""
-                |{
-                |  "team": "$"$"${team.name}",
-                |  "service": "$"$"${service.name}",
-                |  "timestamp": $"$"$timestamp,
-                |  "traceId": "$"$"$tId",
-                |  "msgLevel": "$"$"${msgLevel.entryName}",
-                |  "data": $"$"${ds.show(data.d)}
-                |}
-                |""".stripMargin,
-      p"""
-         |{
-         |  "team": "$"$"${team.name}",
-         |  "service": "$"$"${service.name}",
-         |  "timestamp": $"$"$timestamp,
-         |  "msgLevel": "$"$"${msgLevel.entryName}",
-         |  "data": $"$"${ds.show(data.d)}
-         |}
-         |""".stripMargin
+      tId => noSpaceJson(p"""
+                            |{
+                            |  "team": "$"$"${team.name}",
+                            |  "service": "$"$"${service.name}",
+                            |  "timestamp": $"$"$timestamp,
+                            |  "traceId": "$"$"$tId",
+                            |  "msgLevel": "$"$"${msgLevel.entryName}",
+                            |  "data": $"$"${ds.show(data.d)}
+                            |}
+                            |""".stripMargin),
+      noSpaceJson(p"""
+                    |{
+                    |  "team": "$"$"${team.name}",
+                    |  "service": "$"$"${service.name}",
+                    |  "timestamp": $"$"$timestamp,
+                    |  "msgLevel": "$"$"${msgLevel.entryName}",
+                    |  "data": $"$"${ds.show(data.d)}
+                    |}
+                    |""".stripMargin)
     )
+
+  private val noSpaceJson: String => String = s => parse(s).fold(_.message, _.noSpaces)
 }
 
 final case class WithErrorOperationLog[E, D](
@@ -51,33 +54,35 @@ final case class WithErrorOperationLog[E, D](
     traceId: Option[String] = Try(MDC.get("traceId")).toOption,
     msgLevel: PriorityLevel,
     data: Data[D],
-    error: Error[E]
+    error: OpError[E]
 ) {
 
   def toJsonString(implicit ds: Show[D], es: Show[E]): String =
     traceId.cata(
-      tId => p"""
-                |{
-                |  "team": "$"$"${team.name}",
-                |  "service": "$"$"${service.name}",
-                |  "timestamp": $"$"$timestamp,
-                |  "traceId": "$"$"$tId",
-                |  "msgLevel": "$"$"${msgLevel.entryName}",
-                |  "data": $"$"${ds.show(data.d)},
-                |  "error": $"$"${es.show(error.e)}
-                |}
-                |""".stripMargin,
-      p"""
-         |{
-         |  "team": "$"$"${team.name}",
-         |  "service": "$"$"${service.name}",
-         |  "timestamp": $"$"$timestamp,
-         |  "msgLevel": "$"$"${msgLevel.entryName}",
-         |  "data": $"$"${ds.show(data.d)},
-         |  "error": $"$"${es.show(error.e)}
-         |}
-         |""".stripMargin
+      tId => noSpaceJson(p"""
+                            |{
+                            |  "team": "$"$"${team.name}",
+                            |  "service": "$"$"${service.name}",
+                            |  "timestamp": $"$"$timestamp,
+                            |  "traceId": "$"$"$tId",
+                            |  "msgLevel": "$"$"${msgLevel.entryName}",
+                            |  "data": $"$"${ds.show(data.d)},
+                            |  "error": $"$"${es.show(error.e)}
+                            |}
+                            |""".stripMargin),
+      noSpaceJson(p"""
+                    |{
+                    |  "team": "$"$"${team.name}",
+                    |  "service": "$"$"${service.name}",
+                    |  "timestamp": $"$"$timestamp,
+                    |  "msgLevel": "$"$"${msgLevel.entryName}",
+                    |  "data": $"$"${ds.show(data.d)},
+                    |  "error": $"$"${es.show(error.e)}
+                    |}
+                    |""".stripMargin)
     )
+
+    private val noSpaceJson: String => String = s => parse(s).fold(_.message, _.noSpaces)
 }
 
 object OperationLog {

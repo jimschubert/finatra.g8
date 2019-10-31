@@ -22,7 +22,7 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.1" cross CrossVersion.full),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
-  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.3" cross CrossVersion.full)
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.4" cross CrossVersion.full)
 )
 
 lazy val rootProject = project
@@ -94,6 +94,7 @@ lazy val versions = new {
   val catsRetry      = "0.3.1"
   val log4cats       = "1.0.1"
   val enumeratum     = "1.5.13"
+  val circeVersion   = "0.12.3"
 }
 
 libraryDependencies ++= Seq(
@@ -137,7 +138,11 @@ libraryDependencies ++= Seq(
 ) ++ Seq(
   "com.github.cb372" %% "cats-retry-core",
   "com.github.cb372" %% "cats-retry-cats-effect"
-).map(_ % versions.catsRetry)
+).map(_ % versions.catsRetry) ++ Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-parser"
+).map(_ % versions.circeVersion)
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
 
@@ -256,7 +261,7 @@ dockerLabels := Map(
   "base_image" -> dockerBaseImage.value
 )
 
-dockerEnvVars := Map("SERVICE_NAME" -> "$docker_package_name$", "SERVICE_TAGS" -> "$service_tags$")
+dockerEnvVars := Map("LANG" -> "C.UTF-8", "SERVICE_NAME" -> "$docker_package_name$", "SERVICE_TAGS" -> "$service_tags$")
 
 // This is to apply OS security updates
 lazy val serviceUserGroup = Def.setting(s"$"$"${(daemonUserUid in Docker).value.getOrElse((daemonUser in Docker).value)}:$"$"${(daemonGroupGid in Docker).value.getOrElse((daemonGroup in Docker).value)}")
