@@ -8,7 +8,7 @@ These two types represent a `Problem` response's data structure.
 ### Problem
 Problem type allows you to define a Problem response with an extension that is not defined in RFC7807.
 
-```
+```scala
 final case class Problem[T, E](
     `type`: Uri = Uri.parse("about:blank"),
     title: Title,
@@ -20,7 +20,7 @@ final case class Problem[T, E](
 
 All you need to do is to define your extension type, for example:
 
-```
+```scala
 object SampleExtension {
   final case class TraceId(id: String)   extends AnyVal
   final case class AccountId(id: String) extends AnyVal
@@ -31,7 +31,7 @@ final case class SampleExtension(traceId: TraceId, accountId: AccountId)
 
 #### Sample
 
-```scala mdoc
+```scala mdoc:reset-object
 import com.github.mehmetakiftutuncu.errors.{Errors, SimpleError}
 import com.twitter.finagle.http.Response
 import com.twitter.finagle.http.Status._
@@ -62,7 +62,7 @@ val respContent: String = problemResp.contentString
 
 Other than `Problem`, sometimes you just have no need of data extension, `NoExtensionProblem` is the type you should use.
 
-```
+```scala
 final case class NoExtensionProblem[T](
     `type`: Uri = Uri.parse("about:blank"),
     title: Title,
@@ -98,7 +98,7 @@ Usually, this T type represents your own error type. Thus we give you two pre-de
 
 The definition of `Detail[T]` is the following:
 
-```
+```scala
  trait Detail[T]  extends Product with Serializable {
   def detailMsg(implicit show: Show[T]): String
 }
@@ -108,10 +108,10 @@ The definition of `Detail[T]` is the following:
 
 #### Sample
 
-```
+```scala
 implicit val throwableShow: Show[Throwable] =
 (t: Throwable) =>
-    p""""$"$"${t.getClass.getName} occurred$"$"${t.getMessage.|>(m => (m =!= "").fold(p", reason:`$"$"$m`", ""))}""""
+    p"""$"$"${t.getClass.getName} occurred$"$"${t.getMessage.|>(m => (m =!= "").fold(p", reason:`$"$"$m`", ""))}"""
 
 final case class ThrowableDetail(t: Throwable) extends Detail[Throwable] {
     override def detailMsg(implicit show: Show[Throwable]): String = show.show(t)

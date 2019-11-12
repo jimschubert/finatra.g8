@@ -21,8 +21,8 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
   addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.1" cross CrossVersion.full),
   addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
-  addCompilerPlugin("org.scalamacros"  % "paradise"            % "2.1.1" cross CrossVersion.full),
-  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.4" cross CrossVersion.full)
+  addCompilerPlugin("org.scalamacros"  %% "paradise"           % "2.1.1" cross CrossVersion.full),
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.5" cross CrossVersion.full)
 )
 
 lazy val rootProject = project
@@ -73,7 +73,7 @@ scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "19.10.0"
+  val finatra        = "19.11.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -89,7 +89,7 @@ lazy val versions = new {
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.5"
   val mouse          = "0.23"
-  val monix          = "3.0.0"
+  val monix          = "3.1.0"
   val newtype        = "0.4.3"
   val catsRetry      = "0.3.1"
   val log4cats       = "1.0.1"
@@ -261,7 +261,7 @@ dockerLabels := Map(
   "base_image" -> dockerBaseImage.value
 )
 
-dockerEnvVars := Map("LANG" -> "C.UTF-8", "SERVICE_NAME" -> "$docker_package_name$", "SERVICE_TAGS" -> "$service_tags$")
+dockerEnvVars := Map("LANG" -> "C.UTF-8", "LC_ALL" -> "C.UTF-8", "SERVICE_NAME" -> "$docker_package_name$", "SERVICE_TAGS" -> "$service_tags$")
 
 // This is to apply OS security updates
 lazy val serviceUserGroup = Def.setting(s"$"$"${(daemonUserUid in Docker).value.getOrElse((daemonUser in Docker).value)}:$"$"${(daemonGroupGid in Docker).value.getOrElse((daemonGroup in Docker).value)}")
