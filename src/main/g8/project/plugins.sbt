@@ -19,7 +19,7 @@ addSbtPlugin("org.scalastyle"                 %% "scalastyle-sbt-plugin"     % "
 addSbtPlugin("com.mintbeans"                  % "sbt-ecr"                    % "0.14.1")
 addSbtPlugin("net.virtual-void"               % "sbt-dependency-graph"       % "0.10.0-RC1")
 addSbtPlugin("org.programmiersportgruppe.sbt" %% "tabulartestreporter"       % "4.1.0")
-addSbtPlugin("org.scalameta"                  % "sbt-mdoc"                   % "1.3.6")
+addSbtPlugin("org.scalameta"                  % "sbt-mdoc"                   % "2.0.1")
 addSbtPlugin("com.github.cb372"               % "sbt-explicit-dependencies"  % "0.2.11")
 addSbtPlugin("org.wartremover"                % "sbt-wartremover"            % "2.4.2")
 addSbtPlugin("com.github.sbt"                 % "sbt-cpd"                    % "2.0.0")
