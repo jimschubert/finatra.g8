@@ -20,9 +20,9 @@ lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
   addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.1" cross CrossVersion.full),
-  addCompilerPlugin("io.tryp"          % "splain"              % "0.4.1" cross CrossVersion.patch),
+  addCompilerPlugin("io.tryp"          % "splain"              % "0.5.0" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  %% "paradise"           % "2.1.1" cross CrossVersion.full),
-  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.2.5" cross CrossVersion.full)
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.3.0" cross CrossVersion.full)
 )
 
 lazy val rootProject = project
@@ -65,7 +65,7 @@ coverageHighlighting := true
 
 coverageMinimum          := 70
 coverageFailOnMinimum    := true
-coverageExcludedPackages := ".*sse*.;.*util*.;.*client*."
+coverageExcludedPackages := ".*util*.;.*client*."
 
 scapegoatVersion in ThisBuild := "1.3.10"
 
@@ -73,7 +73,7 @@ scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "19.11.0"
+  val finatra        = "19.12.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -83,17 +83,17 @@ lazy val versions = new {
   val scalaUri       = "1.5.1"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
-  val swaggerFinatra = "19.9.0"
+  val swaggerFinatra = "19.12.1"
   val wireMock       = "2.25.1"
-  val catbird        = "19.10.0"
+  val catbird        = "19.12.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.5"
   val mouse          = "0.23"
   val monix          = "3.1.0"
   val newtype        = "0.4.3"
-  val catsRetry      = "0.3.1"
+  val catsRetry      = "0.3.2"
   val log4cats       = "1.0.1"
-  val enumeratum     = "1.5.13"
+  val enumeratum     = "1.5.14"
   val circeVersion   = "0.12.3"
 }
 
@@ -146,7 +146,7 @@ libraryDependencies ++= Seq(
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
 
-fork in test := false
+fork in test := true
 
 parallelExecution in Test := false
 
@@ -163,6 +163,7 @@ scalacOptions ++= Seq(
     "-language:implicitConversions",
     "-deprecation",
     "-explaintypes",
+    "-optimise",
     "-feature",
     "-Xcheckinit",
     "-Xlint:adapted-args", // Warn if an argument list is modified to match the receiver.
@@ -223,12 +224,18 @@ soccoPackage := List(
 
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
 bashScriptExtraDefines ++= Seq("""addJava "-server"""",
+                               """addJava "-Xmx250m"""",
+                               """addJava "-XX:+UseContainerSupport"""",
                                """addJava "-Dnetworkaddress.cache.ttl=60"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
                                """addJava "-XX:+EnableJVMCI"""",
                                """addJava "-XX:+UseJVMCICompiler"""",
-                               """addJava "-XX:+UseG1GC"""",
-                               """addJava "-XX:+UseStringDeduplication"""")
+                               //  """addJava "-XX:+UseG1GC"""",
+                               """addJava "-XX:+UseConcMarkSweepGC"""",
+                               """addJava "-XX:+UseLWPSynchronization"""",
+                               """addJava "-XX:+UseStringDeduplication"""",
+                               """addJava "-XX:+OptimizeStringConcat"""",
+                               """addJava "-XX:NewRatio=1"""")
 bashScriptExtraDefines ++= Seq("""addApp "-log.level=$"$"${LOG_LEVEL:-INFO}"""",
                                """addApp "-swagger.docs.endpoint=$"$"${SWAGGER_DOC_PATH:-/$name;format="norm,word"$/docs}"""",
                                s"""addApp "-service.version=$"$"${version.value}"""")
@@ -240,7 +247,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.2.1"
+dockerBaseImage    := "findepi/graalvm:19.3.0"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)
