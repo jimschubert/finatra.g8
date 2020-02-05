@@ -20,9 +20,10 @@ lazy val commonSettings = Seq(
   autoCompilerPlugins := true,
   addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
   addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.1" cross CrossVersion.full),
-  addCompilerPlugin("io.tryp"          % "splain"              % "0.5.0" cross CrossVersion.patch),
   addCompilerPlugin("org.scalamacros"  %% "paradise"           % "2.1.1" cross CrossVersion.full),
-  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.3.0" cross CrossVersion.full)
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.3.0" cross CrossVersion.full),
+  addCompilerPlugin("org.augustjune"   %% "context-applied"    % "0.1.2")
+  // addCompilerPlugin("io.tryp"          % "splain"              % "0.5.0" cross CrossVersion.patch),
 )
 
 lazy val rootProject = project
@@ -67,13 +68,13 @@ coverageMinimum          := 70
 coverageFailOnMinimum    := true
 coverageExcludedPackages := ".*util*.;.*client*."
 
-scapegoatVersion in ThisBuild := "1.3.10"
+scapegoatVersion in ThisBuild := "1.4.1"
 
 scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "19.12.0"
+  val finatra        = "20.1.0"
   val guice          = "4.2.2"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
@@ -85,16 +86,17 @@ lazy val versions = new {
   val fluentdScala   = "0.2.8"
   val swaggerFinatra = "19.12.1"
   val wireMock       = "2.25.1"
-  val catbird        = "19.12.0"
+  val catbird        = "20.1.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.5"
-  val mouse          = "0.23"
+  val mouse          = "0.24"
   val monix          = "3.1.0"
   val newtype        = "0.4.3"
   val catsRetry      = "0.3.2"
   val log4cats       = "1.0.1"
-  val enumeratum     = "1.5.14"
+  val enumeratum     = "1.5.15"
   val circeVersion   = "0.12.3"
+  val mUnit          = "0.4.4"
 }
 
 libraryDependencies ++= Seq(
@@ -134,7 +136,8 @@ libraryDependencies ++= Seq(
   "org.scalatest"                %% "scalatest"                       % versions.scalatest      % "test",
   "com.novocode"                 % "junit-interface"                  % versions.junitInterface % "test",
   "com.whisk"                    %% "docker-testkit-scalatest"        % versions.dockerItScala  % "test",
-  "com.whisk"                    %% "docker-testkit-impl-docker-java" % versions.dockerItScala  % "test"
+  "com.whisk"                    %% "docker-testkit-impl-docker-java" % versions.dockerItScala  % "test",
+  "org.scalameta"                %% "munit"                           % versions.mUnit          % "test"
 ) ++ Seq(
   "com.github.cb372" %% "cats-retry-core",
   "com.github.cb372" %% "cats-retry-cats-effect"
@@ -145,6 +148,7 @@ libraryDependencies ++= Seq(
 ).map(_ % versions.circeVersion)
 
 testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v")
+testFrameworks += new TestFramework("munit.Framework")
 
 fork in test := true
 
@@ -210,13 +214,14 @@ scalacOptions ++= Seq(
     "-P:bm4:no-filtering:y",
     "-P:bm4:no-map-id:y",
     "-P:bm4:no-tupling:y",
-    "-P:bm4:implicit-patterns:y",
-    "-P:splain:all:true"
+    "-P:bm4:implicit-patterns:y"
+    // "-P:splain:all:true"
 )
 
 testReportFormats := Set(WhiteSpaceDelimited, THtml, Json)
 
-soccoOut := target.value / "socco"
+soccoOut       := target.value / "socco"
+soccoOnCompile := true
 soccoPackage := List(
   "com.twitter.util:https://twitter.github.io/util/docs/",
   "com.htc.vr8.:file://./target/scala-2.12/api/"
@@ -231,8 +236,8 @@ bashScriptExtraDefines ++= Seq("""addJava "-server"""",
                                """addJava "-XX:+EnableJVMCI"""",
                                """addJava "-XX:+UseJVMCICompiler"""",
                                //  """addJava "-XX:+UseG1GC"""",
-                               """addJava "-XX:+UseConcMarkSweepGC"""",
-                               """addJava "-XX:+UseLWPSynchronization"""",
+                               // """addJava "-XX:+UseConcMarkSweepGC"""",
+                               """addJava "-XX:+G1UseAdaptiveIHOP"""",
                                """addJava "-XX:+UseStringDeduplication"""",
                                """addJava "-XX:+OptimizeStringConcat"""",
                                """addJava "-XX:NewRatio=1"""")
@@ -247,7 +252,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.3.0"
+dockerBaseImage    := "findepi/graalvm:19.3.1-java11"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)

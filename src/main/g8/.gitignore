@@ -15,6 +15,7 @@ lib_managed/
 src_managed/
 project/boot/
 project/plugins/project/
+project/metals.sbt
 
 # Scala-IDE specific
 .scala_dependencies
@@ -74,7 +75,7 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
+# .idea/misc.xml
 # *.ipr
 
 
