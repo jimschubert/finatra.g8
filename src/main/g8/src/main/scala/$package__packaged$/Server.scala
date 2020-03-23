@@ -23,12 +23,12 @@ class Server extends HttpServer {
 
   implicit lazy val scheduler: SchedulerService = Scheduler.io("$package$")
 
-  override protected def modules = Seq(ServiceSwaggerModule)
+  final override protected def modules = Seq(ServiceSwaggerModule)
 
-  override def defaultHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => p":$"$"$x")
-  override val name            = "$package$-$name;format="Camel"$"
+  final override def defaultHttpPort = getConfig[String]("FINATRA_HTTP_PORT").fold(":9999")(x => p":$"$"$x")
+  final override val name            = "$package$-$name;format="Camel"$"
 
-  override def configureHttp(router: HttpRouter): Unit = {
+  final override def configureHttp(router: HttpRouter): Unit = {
     router
       .filter[LoggingMDCFilter[Request, Response]]
       .filter[TraceIdMDCFilter[Request, Response]]

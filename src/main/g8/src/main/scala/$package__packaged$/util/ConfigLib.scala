@@ -19,24 +19,24 @@ trait DataConverter[T] {
 }
 
 class IntDataConverter extends DataConverter[Int] {
-  def convert(v: String): Option[Int] = allCatch.opt(v.toInt)
+  final override def convert(v: String): Option[Int] = allCatch.opt(v.toInt)
 }
 
 class StringDataConverter extends DataConverter[String] {
-  def convert(v: String): Option[String] = Some(v)
+  final override def convert(v: String): Option[String] = Option(v)
 }
 
 class BooleanDataConverter extends DataConverter[Boolean] {
-  def convert(v: String): Option[Boolean] = allCatch.opt(v.toBoolean)
+  final override def convert(v: String): Option[Boolean] = allCatch.opt(v.toBoolean)
 }
 
 class LongDataConverter extends DataConverter[Long] {
-  def convert(v: String): Option[Long] = allCatch.opt(v.toLong)
+  final override def convert(v: String): Option[Long] = allCatch.opt(v.toLong)
 }
 
 // TODO - should handle the exception cases
 class UriDataConverter extends DataConverter[Url] {
-  def convert(v: String): Option[Url] = allCatch.opt(parse(v))
+  final override def convert(v: String): Option[Url] = allCatch.opt(parse(v))
 }
 
 object DataConverter {

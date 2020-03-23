@@ -21,7 +21,7 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.olegpy"       %% "better-monadic-for" % "0.3.1"),
   addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.1" cross CrossVersion.full),
   addCompilerPlugin("org.scalamacros"  %% "paradise"           % "2.1.1" cross CrossVersion.full),
-  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.3.0" cross CrossVersion.full),
+  addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.3.7" cross CrossVersion.full),
   addCompilerPlugin("org.augustjune"   %% "context-applied"    % "0.1.2")
   // addCompilerPlugin("io.tryp"          % "splain"              % "0.5.0" cross CrossVersion.patch),
 )
@@ -68,35 +68,75 @@ coverageMinimum          := 70
 coverageFailOnMinimum    := true
 coverageExcludedPackages := ".*util*.;.*client*."
 
-scapegoatVersion in ThisBuild := "1.4.1"
+scapegoatVersion in ThisBuild := "1.4.2"
+
+wartremoverErrors ++= Warts.allBut(
+  Wart.TraversableOps,
+  Wart.NonUnitStatements,
+  Wart.Overloading,
+  Wart.Null,
+  Wart.FinalVal,
+  Wart.PublicInference,
+  Wart.ImplicitConversion,
+  Wart.ImplicitParameter,
+  Wart.ExplicitImplicitTypes,
+  Wart.Nothing,
+  Wart.Any,
+  Wart.DefaultArguments
+)
+wartremoverErrors ++= Seq(
+  ContribWart.DiscardedFuture,
+  ContribWart.ExposedTuples,
+  ContribWart.NoNeedForMonad,
+  ContribWart.SealedCaseClass
+)
+wartremoverWarnings ++= Seq(
+  Wart.TraversableOps,
+  Wart.NonUnitStatements,
+  Wart.Overloading,
+  Wart.Null,
+  Wart.FinalVal,
+  Wart.PublicInference,
+  Wart.ImplicitConversion,
+  Wart.DefaultArguments,
+  Wart.Any,
+  Wart.ImplicitParameter,
+  Wart.ExplicitImplicitTypes,
+  Wart.Nothing,
+  ContribWart.OldTime,
+  ContribWart.SomeApply,
+  ContribWart.UnintendedLaziness,
+  ContribWart.UnsafeInheritance,
+  ContribWart.MissingOverride
+)
 
 scalafmtConfig    := file(".scalafmt.conf")
 scalafmtOnCompile := true
 
 lazy val versions = new {
-  val finatra        = "20.1.0"
-  val guice          = "4.2.2"
+  val finatra        = "20.3.0"
+  val guice          = "4.2.3"
   val logback        = "1.2.3"
   val mockito        = "1.10.19"
   val scalatest      = "3.0.8"
   val junitInterface = "0.11"
   val dockerItScala  = "0.9.9"
-  val scalaUri       = "1.5.1"
+  val scalaUri       = "2.2.0"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
-  val swaggerFinatra = "19.12.1"
+  val swaggerFinatra = "20.3.0"
   val wireMock       = "2.25.1"
-  val catbird        = "20.1.0"
+  val catbird        = "20.3.0"
   val scalaErrors    = "1.2"
-  val perfolation    = "1.1.5"
+  val perfolation    = "1.1.7"
   val mouse          = "0.24"
   val monix          = "3.1.0"
   val newtype        = "0.4.3"
   val catsRetry      = "0.3.2"
   val log4cats       = "1.0.1"
   val enumeratum     = "1.5.15"
-  val circeVersion   = "0.12.3"
-  val mUnit          = "0.4.4"
+  val circeVersion   = "0.13.0"
+  val mUnit          = "0.6.0"
 }
 
 libraryDependencies ++= Seq(
@@ -252,7 +292,7 @@ dockerVersion               := Some(DockerVersion(17, 9, 1, Some("ce")))
 defaultLinuxInstallLocation in Docker := "/opt/$docker_package_name$"
 packageName                 in Docker := "vr/$docker_package_name$"
 // dockerBaseImage := "openjdk:8-jre-slim"
-dockerBaseImage    := "findepi/graalvm:19.3.1-java11"
+dockerBaseImage    := "findepi/graalvm:20.0.0-java11"
 version            in Docker := s"$"$"${if (gitHeadCode.value != "na") s"$"$"${version.value}_$"$"${gitHeadCode.value}" else version.value}"
 maintainer         in Docker := "$maintainer_name$ <$maintainer_email$>"
 dockerExposedPorts := Seq(9999, 9990)

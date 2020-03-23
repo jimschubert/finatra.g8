@@ -43,6 +43,6 @@ trait HttpClientRetry extends Logging {
   private val policy: IO[RetryPolicy[IO]] =
     config.map(c => limitRetries[IO](c.retryTimes) |+| constantDelay[IO](c.delay.milliseconds))
 
-  def withRetry[A](action: => IO[A]): IO[A] =
+  final def withRetry[A](action: => IO[A]): IO[A] =
     policy.flatMap(p => retryingOnAllErrors[A](policy = p, onError = logError)(action))
 }

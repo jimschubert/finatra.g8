@@ -13,7 +13,7 @@ import mouse.boolean._
 class ACLoggingFilter[R <: Request] @Inject()(logFormatter: LogFormatter[R, Response])
     extends SimpleFilter[R, Response]
     with Logging {
-  override def apply(request: R, service: Service[R, Response]): Future[Response] =
+  final override def apply(request: R, service: Service[R, Response]): Future[Response] =
     (!isInfoEnabled).fold(
       service(request), {
         request.path.|>(
