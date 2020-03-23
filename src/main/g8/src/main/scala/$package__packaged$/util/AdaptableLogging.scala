@@ -5,7 +5,7 @@ import $package$.util.PipeOperator._
 import com.twitter.inject.Logging
 
 trait AdaptableLogging extends Logging {
-  def log(t: Option[Throwable] = None, msg: => Any): Unit =
+  final def log(t: Option[Throwable] = None, msg: => Any): Unit =
     getConfig[String]("LOG_LEVEL")
       .map(_.toLowerCase)
       .|>(

@@ -9,7 +9,7 @@ import $package$.problem.ProblemResponse._
 import $package$.util.PipeOperator._
 import com.twitter.finagle.http.{Response, Status}
 import com.twitter.finatra.http.response.SimpleResponse
-import com.twitter.finatra.json.FinatraObjectMapper
+import com.twitter.finatra.jackson.ScalaObjectMapper
 import io.estatico.newtype.macros.newtype
 import io.lemonlabs.uri.Uri
 import mouse.boolean._
@@ -27,9 +27,8 @@ final case class NoExtensionProblem[T](`type`: Uri = Uri.parse("about:blank"),
                                         detail: Detail[T])
 
 object ProblemResponse {
-  private[this] val mapper = FinatraObjectMapper
-    .create()
-    .$"$"$$"$"$(_.objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE))
+  private[this] val mapper =
+    ScalaObjectMapper.builder.withPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE).objectMapper
 
     def apply[T, E](problem: Problem[T, E])(implicit show: Show[T]): Response =
       SimpleResponse(

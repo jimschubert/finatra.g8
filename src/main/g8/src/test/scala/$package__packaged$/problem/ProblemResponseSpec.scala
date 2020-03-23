@@ -30,7 +30,7 @@ class ProblemResponseSpec extends FunSuite with Matchers {
       )
     )
 
-    resp.contentType shouldBe Some("application/problem+json")
+    resp.contentType shouldBe Option("application/problem+json")
     resp.status shouldBe NotFound
     resp.contentString shouldBe """{"type":"http://localhost:8080/errors.html","title":"Resource Not Found","status":404,"detail":[{"name":"notFound"}],"extension":{"traceId":"tc-2846673","accountId":"ac-42567833"}}"""
 
@@ -43,7 +43,7 @@ class ProblemResponseSpec extends FunSuite with Matchers {
       )
     )
 
-    anotherResp.contentType shouldBe Some("application/problem+json")
+    anotherResp.contentType shouldBe Option("application/problem+json")
     anotherResp.status shouldBe FailedDependency
     anotherResp.contentString shouldBe """{"type":"http://localhost:8080/errors.html","title":"Failed Dependency","status":424,"detail":[{"name":"database"}]}"""
 
@@ -56,7 +56,7 @@ class ProblemResponseSpec extends FunSuite with Matchers {
         )
       )
 
-    lastResp.contentType shouldBe Some("application/problem+json")
+    lastResp.contentType shouldBe Option("application/problem+json")
     lastResp.status shouldBe FailedDependency
     lastResp.contentString shouldBe """{"type":"about:blank","title":"Failed Dependency","status":424,"detail":[{"name":"database"}]}"""
 
@@ -69,7 +69,7 @@ class ProblemResponseSpec extends FunSuite with Matchers {
       )
     )
 
-    t1Resp.contentType shouldBe Some("application/problem+json")
+    t1Resp.contentType shouldBe Option("application/problem+json")
     t1Resp.status shouldBe NotFound
     t1Resp.contentString shouldBe """{"type":"http://localhost:8080/errors.html","title":"Resource Not Found","status":404,"detail":"java.lang.Error occurred, reason:`Required image not found!`"}"""
   }
