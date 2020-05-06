@@ -4,7 +4,7 @@ resolvers += Resolver.url("bintray-sbt-plugin-releases", url("http://dl.bintray.
 resolvers += Classpaths.sbtPluginReleases
 
 // addSbtPlugin("io.get-coursier"                % "sbt-coursier"               % "2.0.0-RC3-3")
-addSbtPlugin("ch.epfl.scala"                  % "sbt-scalafix"               % "0.9.15")
+addSbtPlugin("ch.epfl.scala"                  % "sbt-scalafix"               % "0.9.15-2")
 addSbtPlugin("au.com.onegeek"                 %% "sbt-dotenv"                % "2.1.146")
 addSbtPlugin("com.github.gseitz"              % "sbt-release"                % "1.0.12")
 addSbtPlugin("com.typesafe.sbt"               % "sbt-git"                    % "1.0.0")
@@ -19,9 +19,9 @@ addSbtPlugin("org.scalastyle"                 %% "scalastyle-sbt-plugin"     % "
 addSbtPlugin("com.mintbeans"                  % "sbt-ecr"                    % "0.15.0")
 addSbtPlugin("net.virtual-void"               % "sbt-dependency-graph"       % "0.10.0-RC1")
 addSbtPlugin("org.programmiersportgruppe.sbt" %% "tabulartestreporter"       % "4.1.0")
-addSbtPlugin("org.scalameta"                  % "sbt-mdoc"                   % "2.1.5")
+addSbtPlugin("org.scalameta"                  % "sbt-mdoc"                   % "2.2.0")
 addSbtPlugin("com.github.cb372"               % "sbt-explicit-dependencies"  % "0.2.12")
-addSbtPlugin("org.wartremover"                % "sbt-wartremover"            % "2.4.7")
+addSbtPlugin("org.wartremover"                % "sbt-wartremover"            % "2.4.8")
 addSbtPlugin("com.github.sbt"                 % "sbt-cpd"                    % "2.0.0")
 addSbtPlugin("com.lightbend.paradox"          % "sbt-paradox"                % "0.8.0")
 addSbtPlugin("io.github.jonas"                % "sbt-paradox-material-theme" % "0.6.0")
