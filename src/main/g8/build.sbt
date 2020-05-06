@@ -22,6 +22,7 @@ lazy val commonSettings = Seq(
   addCompilerPlugin("com.github.cb372" % "scala-typed-holes"   % "0.1.3" cross CrossVersion.full),
   addCompilerPlugin("org.scalamacros"  %% "paradise"           % "2.1.1" cross CrossVersion.full),
   addCompilerPlugin("org.scalameta"    % "semanticdb-scalac"   % "4.3.10" cross CrossVersion.full),
+  addCompilerPlugin("org.typelevel"    %% "kind-projector"     % "0.11.0" cross CrossVersion.full),
   addCompilerPlugin("org.augustjune"   %% "context-applied"    % "0.1.4")
   // addCompilerPlugin("io.tryp"          % "splain"              % "0.5.0" cross CrossVersion.patch),
 )
@@ -36,6 +37,10 @@ lazy val rootProject = project
       _.withColor("teal", "indigo").withFont("Roboto", "Fira Code")
     },
     publishArtifact in (Compile, packageDoc) in ThisBuild := false,
+    scalafixDependencies in ThisBuild ++= Seq(
+      "org.scalatest"        %% "autofix"          % "3.1.0.0",
+      "com.github.liancheng" %% "organize-imports" % "0.3.0-RC1"
+    ),
     commonSettings
   ).enablePlugins(
     JavaAppPackaging,
@@ -68,7 +73,7 @@ coverageMinimum          := 70
 coverageFailOnMinimum    := true
 coverageExcludedPackages := ".*util*.;.*client*.;.*problem*.;.*http.retry*."
 
-scapegoatVersion in ThisBuild := "1.4.3"
+scapegoatVersion in ThisBuild := "1.4.4"
 
 wartremoverErrors ++= Warts.allBut(
   Wart.TraversableOps,
@@ -124,17 +129,17 @@ lazy val versions = new {
   val scalaUri       = "2.2.0"
   val hamsters       = "2.6.0"
   val fluentdScala   = "0.2.8"
-  val swaggerFinatra = "20.3.0"
+  val swaggerFinatra = "20.4.1"
   val wireMock       = "2.25.1"
   val catbird        = "20.3.0"
   val scalaErrors    = "1.2"
   val perfolation    = "1.1.7"
   val mouse          = "0.25"
-  val monix          = "3.2.0"
+  val monix          = "3.2.1"
   val newtype        = "0.4.3"
   val catsRetry      = "0.3.2"
   val log4cats       = "1.0.1"
-  val enumeratum     = "1.5.15"
+  val enumeratum     = "1.6.0"
   val circeVersion   = "0.13.0"
   val mUnit          = "0.7.3"
 }
@@ -270,6 +275,7 @@ soccoPackage := List(
 // bashScriptExtraDefines += """addJava "-Dnetworkaddress.cache.ttl=60""""
 bashScriptExtraDefines ++= Seq("""addJava "-server"""",
                                """addJava "-Xmx250m"""",
+                               """addJava "-XX:+PrintGC"""",
                                """addJava "-XX:+UseContainerSupport"""",
                                """addJava "-Dnetworkaddress.cache.ttl=60"""",
                                """addJava "-XX:+UnlockExperimentalVMOptions"""",
