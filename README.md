@@ -1,7 +1,7 @@
 This is a Giter8 template for Finatra
 
 ```
-sbt new jimschubert/finatra.g8
+sbt new forthy/finatra.g8
 ```
 
 [License](./LICENSE)

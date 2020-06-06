@@ -1,6 +1,6 @@
 # App
 
-A templated Finatra application. See [jimschubert/finatra.g8](https://github.com/jimschubert/finatra.g8).
+A templated Finatra application. See [forthy/finatra.g8](https://github.com/forthy/finatra.g8).
 
 # Build
 
@@ -23,6 +23,28 @@ From an SBT console:
 ```
 
 This will run your application in a forked JVM, reloading it whenever files change locally.
+
+## Regenerate project site
+
+This project use [sbt-microsites](https://47deg.github.io/sbt-microsites/) to generate a project website.
+
+The site's root directory is in the `<project root directory>/src/main/tut`.
+
+From an SBT console:
+
+```
+sbt clean makeMicrosite
+```
+
+Then go to `<project root directory>/target/site`, then:
+
+```
+jekyll server
+```
+
+to publish the project website locally.
+
+**You need to install Jekyll first!**
 
 ## Elsewhere
 
@@ -58,15 +80,3 @@ docker run $(docker images -a -q | head -1)
 <kbd>CTRL</kbd>+<kbd>C</kbd> to kill the container.
 
 The native packager's docker plugin gets you up and running in seconds. For longer term development, you'll probably find a `Dockerfile` to be a more maintainable solution.
-
-# Scaffolding
-
-New code can be quickly generated using Giter8 Scaffolding.
-
-Directories under `./g8` house the types of scaffolds. For example, `./g8/controller` contains templates to scaffold a new controller. To do this, run the following from an sbt session:
-
-```
-g8Scaffold controller
-```
-
-Answer the prompts and a success message should appear.
